@@ -20,8 +20,8 @@ class User extends MY_Controller {
     }
 
     public function testDatabase() {
-        $query = $this->db->where('testId', "1")
-                          ->get('test');
+        $query = $this->db->where('Beer_id', "9")
+                          ->get('Beers');
         $this->sendResponse(200, ['results' => $query->result_array()]);
     }
 }
