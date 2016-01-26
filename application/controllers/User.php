@@ -20,7 +20,13 @@ class User extends MY_Controller {
     }
 
     public function testDatabase() {
-        $query = $this->db->get('Beers');//where('testId', "1")
+        $query = $this->db->where('testId', "1")
+                          ->get('test');
+        $this->sendResponse(200, ['results' => $query->result_array()]);
+    }
+
+    public function getBeers() {
+        $query = $this->db->get('Beers');
                           
         $this->sendResponse(200, ['results' => $query->result_array()]);
     }
