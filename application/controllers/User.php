@@ -25,10 +25,5 @@ class User extends MY_Controller {
         $this->sendResponse(200, ['results' => $query->result_array()]);
     }
 
-    public function getBeers() {
-        $query = $this->db->get('Beers');
-                          
-        $this->sendResponse(200, ['results' => $query->result_array()]);
-    }
 }
 ?>
