@@ -100,5 +100,52 @@ class User extends MY_Controller {
             $this->sendResponse(400, ['details' => 'Invalid username or password']);
         }
     }
+
+    public function setUsername() {
+        if(!$this->requireParams(['userName' => 'str', 'userId' => 'str'])) return;
+        $params = $this->getParams();
+
+        $data = ['User_name'    => $params['userName']];
+
+        $this->db->where(['User_id' => $params['userId']]);
+        if(!$this->db->update('Users', $data)) {
+            $error = $this->db->error();
+
+            if(1062 == $error['code']) {
+                $this->sendResponse(400, ['details' => 'Username address in use']);
+            }
+            else {
+                $this->sendResponse(500, ['details' => 'An unknown error occurred']);
+            }
+        } else {
+            $this->sendResponse(200);
+        }
+    }
+
+    public function setPassword() {
+        if(!$this->requireParams([
+            'oldPass' => 'str', 
+            'newPass' => 'str', 
+            'userId' => 'str'])) return;
+        $params = $this->getParams();
+
+        $data = ['User_password'    => password_hash($params['newPass'], PASSWORD_DEFAULT)];
+
+        $query = $this->db->get_where('Users', ['User_id' => $params['userId']]);
+        if(count($query->result_array()) > 0) {
+            $user = $query->row_array();
+
+            if(password_verify($params['oldPass'], $user['User_password'])) {
+                $this->db->where(['User_id' => $params['userId']]);
+                if(!$this->db->update('Users', $data)) {
+                    $this->sendResponse(500, ['details' => 'An unknown error occurred']);
+                } else {
+                    $this->sendResponse(200);
+                }
+            } else {
+                $this->sendResponse(400, ['details' => 'Passwords do not match']);
+            }
+        }
+    }
 }
 ?>
