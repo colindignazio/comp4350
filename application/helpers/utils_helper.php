@@ -80,4 +80,11 @@ if(!function_exists('getClientIP')) {
         return getenv('REMOTE_ADDR');
     }
 }
+
+if(!function_exists('isEmail')) {
+    // Returns TRUE if $str is an email and FALSE otherwise
+    function isEmail($str) {
+        return (filter_var($str, FILTER_VALIDATE_EMAIL) !== FALSE);
+    }
+}
 ?>
