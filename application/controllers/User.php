@@ -59,11 +59,14 @@ class User extends MY_Controller {
                 $this->sendResponse(400, ['details' => 'Email in already in use']);
                 return;
             }
+
+            $emailCode = genVerificationCode();
             // Insert row into users table
             $data = [
                 'User_name'            => $params['userName'],
                 'User_password'        => password_hash($params['password'], PASSWORD_DEFAULT),
-                'User_email'           => $params['email']
+                'User_email'           => $params['email'],
+                'User_email_code'      => $emailCode
             ];
 
             // Insert and check for unique key error
@@ -72,6 +75,8 @@ class User extends MY_Controller {
                 $this->sendResponse(500, ['details' => 'An unknown error occurred']);
             }
             else {
+                $this->load->library('emailer');
+                $this->emailer->sendVerificationCode($params['email'], $emailCode);
                 $this->sendResponse(200);
             }
         }

@@ -87,4 +87,14 @@ if(!function_exists('isEmail')) {
         return (filter_var($str, FILTER_VALIDATE_EMAIL) !== FALSE);
     }
 }
+
+if(!function_exists('genVerificationCode')) {
+    function genVerificationCode() {
+        $chars = str_split('0123456789');
+        $code = '';
+        $len = rand(5,6);
+        while($len--) $code .= $chars[rand(0,9)];
+        return $code;
+    }
+}
 ?>
