@@ -6,7 +6,7 @@ class User extends MY_Controller {
         parent::__construct();
         //$this->load->model('users');
         //$this->load->model('workers');
-        //$this->load->model('sessions');
+        $this->load->model('sessions');
     }
 
     public function tesst(){
@@ -77,7 +77,11 @@ class User extends MY_Controller {
             else {
                 $this->load->library('emailer');
                 $this->emailer->sendVerificationCode($params['email'], $emailCode);
-                $this->sendResponse(200);
+                $userId = $this->db->insert_id();
+                $sessionId = $this->sessions->createSession($userId);
+                unset($data['User_password']);
+                unset($data['User_email_code']);
+                $this->sendResponse(200, ['user' => $data, 'sessionId' => $sessionId]);
             }
         }
     }
@@ -92,7 +96,8 @@ class User extends MY_Controller {
 
             if(password_verify($params['password'], $user['User_password'])) {
                 unset($user['User_password']);
-                $this->sendResponse(200, ['user' => $user]);
+                $sessionId = $this->sessions->createSession($user['User_id']);
+                $this->sendResponse(200, ['user' => $user, 'sessionId' => $sessionId]);
             } else {
                 $this->sendResponse(400, ['details' => 'Invalid username or password']);
             }
@@ -102,41 +107,42 @@ class User extends MY_Controller {
     }
 
     public function setUsername() {
-        if(!$this->requireParams(['userName' => 'str', 'userId' => 'str'])) return;
+        if(!$this->requireParams(['sessionId' => 'str', 'userName' => 'str'])) return;
         $params = $this->getParams();
 
         $data = ['User_name'    => $params['userName']];
 
-        $this->db->where(['User_id' => $params['userId']]);
-        if(!$this->db->update('Users', $data)) {
-            $error = $this->db->error();
+        if(FALSE !== $user = $this->sessions->getUser($params['sessionId'])) {
+            $this->db->where(['User_id' => $user['User_id']]);
+            if(!$this->db->update('Users', $data)) {
+                $error = $this->db->error();
 
-            if(1062 == $error['code']) {
-                $this->sendResponse(400, ['details' => 'Username address in use']);
-            }
-            else {
-                $this->sendResponse(500, ['details' => 'An unknown error occurred']);
+                if(1062 == $error['code']) {
+                    $this->sendResponse(400, ['details' => 'Username address in use']);
+                }
+                else {
+                    $this->sendResponse(500, ['details' => 'An unknown error occurred']);
+                }
+            } else {
+                $this->sendResponse(200);
             }
         } else {
-            $this->sendResponse(200);
+            $this->sendResponse(401);
         }
     }
 
     public function setPassword() {
         if(!$this->requireParams([
-            'oldPass' => 'str', 
-            'newPass' => 'str', 
-            'userId' => 'str'])) return;
+            'sessionId' => 'str',
+            'oldPass'   => 'str', 
+            'newPass'   => 'str'])) return;
         $params = $this->getParams();
 
-        $data = ['User_password'    => password_hash($params['newPass'], PASSWORD_DEFAULT)];
-
-        $query = $this->db->get_where('Users', ['User_id' => $params['userId']]);
-        if(count($query->result_array()) > 0) {
-            $user = $query->row_array();
+        if(FALSE !== $user = $this->sessions->getUser($params['sessionId'])) {
+            $data = ['User_password'    => password_hash($params['newPass'], PASSWORD_DEFAULT)];
 
             if(password_verify($params['oldPass'], $user['User_password'])) {
-                $this->db->where(['User_id' => $params['userId']]);
+                $this->db->where(['User_id' => $user['User_id']]);
                 if(!$this->db->update('Users', $data)) {
                     $this->sendResponse(500, ['details' => 'An unknown error occurred']);
                 } else {
@@ -145,6 +151,8 @@ class User extends MY_Controller {
             } else {
                 $this->sendResponse(400, ['details' => 'Passwords do not match']);
             }
+        } else {
+            $this->sendResponse(401);
         }
     }
 }
