@@ -31,9 +31,19 @@ class Sessions extends CI_Model {
                 'User_id'        => $userId
             ];
 
-        $this->load->database();
-        if(!$this->db->insert('Sessions', $data)) {
-            return false;
+        $userQuery = $this->db->query(' SELECT *
+                                        FROM Sessions 
+                                        WHERE User_id="' . $userId . '"');
+
+        if(count($userQuery->result_array()) > 0) {
+            $this->db->where(['Session_id' => $userQuery->row_array()['Session_id']]);
+            if(!$this->db->update('Sessions', ['Session_id' => $sessionId])) {
+                return false;
+            }
+        } else {
+            if(!$this->db->insert('Sessions', $data)) {
+                return false;
+            }
         }
         
         return $sessionId;

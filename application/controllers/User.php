@@ -106,6 +106,17 @@ class User extends MY_Controller {
         }
     }
 
+    public function logout() {
+        if(!$this->requireParams(['sessionId' => 'str'])) return;
+        $params = $this->getParams();
+        $this->db->where(['Session_id' => $params['sessionId']]);
+        if(!$this->db->delete('Sessions')) {
+            $this->sendResponse(400, ['details' => 'Error logging out']);
+        } else {
+            $this->sendResponse(200);
+        }
+    }
+
     public function setUsername() {
         if(!$this->requireParams(['sessionId' => 'str', 'userName' => 'str'])) return;
         $params = $this->getParams();
