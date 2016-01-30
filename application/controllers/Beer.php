@@ -9,30 +9,29 @@ class Beer extends MY_Controller {
         //$this->load->model('sessions');
     }
 
+    public function keywordSearch(){
+        if(!$this->requireParams(['searchToken'  => 'str'])) return;
+        $params = $this->getParams();
+        $searchToken = $params['searchToken'];
+        if(strlen($searchToken)<3){
+            $this->sendResponse(400, ['details' => 'Search token too short']);
+        } else {
+            $nameQuery = $this->db->query("SELECT * from Beers WHERE Name LIKE '%$searchToken%'"); 
+            $breweryQuery = $this->db->query("SELECT * from Beers WHERE Brewery LIKE '%$searchToken%'"); 
+            $typeQuery = $this->db->query("SELECT * from Beers WHERE Type LIKE '%$searchToken%'");
+
+        
+            $this->sendResponse(200, ['nameMatches' => $nameQuery->result_array(),
+                                      'breweryMatches' => $breweryQuery->result_array(),
+                                      'typeMatches' => $typeQuery->result_array() ]);
+        }
+    }
+
     public function All() {
         $query = $this->db->get('Beers');
                           
         $this->sendResponse(200, ['results' => $query->result_array()]);
     }
-    public function ExampleBeer() {
-        $query = $this->db->where('Beer_id', "12")
-                          ->get('Beers');
-        $this->sendResponse(200, ['results' => $query->result_array()]);
-    }
-    public function Ale() {
-        $query = $this->db->where('Type', "Ale")
-                          ->get('Beers');         
-        $this->sendResponse(200, ['results' => $query->result_array()]);
-    }
-    public function Stout() {
-        $query = $this->db->where('Type', "Stout")
-                          ->get('Beers');                 
-        $this->sendResponse(200, ['results' => $query->result_array()]);
-    }
-    public function Lager() {
-        $query = $this->db->where('Type', "Lager")
-                          ->get('Beers');
-        $this->sendResponse(200, ['results' => $query->result_array()]);
-    }
+
 }
 ?>
