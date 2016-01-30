@@ -9,7 +9,7 @@ class Beer extends MY_Controller {
         //$this->load->model('sessions');
     }
 
-    public function keywordSearch(){
+    public function search(){
         if(!$this->requireParams(['searchToken'  => 'str'])) return;
         $params = $this->getParams();
         $searchToken = $params['searchToken'];
