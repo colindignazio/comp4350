@@ -20,10 +20,24 @@ class Beer extends MY_Controller {
             $breweryQuery = $this->db->query("SELECT * from Beers WHERE Brewery LIKE '%$searchToken%'"); 
             $typeQuery = $this->db->query("SELECT * from Beers WHERE Type LIKE '%$searchToken%'");
 
-        
-            $this->sendResponse(200, ['nameMatches' => $nameQuery->result_array(),
-                                      'breweryMatches' => $breweryQuery->result_array(),
-                                      'typeMatches' => $typeQuery->result_array() ]);
+            $responseArray = [];
+            if (count($nameQuery->result_array())>0){
+                $responseArray = array_merge($responseArray, ['nameMatches' => $nameQuery->result_array()]);
+            }
+            if (count($breweryQuery->result_array())>0){
+                $responseArray = array_merge($responseArray, ['breweryMatches' => $breweryQuery->result_array()]);
+            }
+            if (count($typeQuery->result_array())>0){
+                $responseArray = array_merge($responseArray, ['typeMatches' => $typeQuery->result_array()]);
+            }
+
+            if(count($responseArray)==0){
+                $this->sendResponse(200, ['details' => 'No matching results']);    
+            } else {
+                $this->sendResponse(200, $responseArray);  
+            }
+
+            
         }
     }
 
