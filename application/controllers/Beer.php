@@ -9,6 +9,21 @@ class Beer extends MY_Controller {
         //$this->load->model('sessions');
     }
 
+    public function seachById(){
+        if(!$this->requireParams(['beverage_id'  => 'str'])) return;
+        $params = $this->getParams();
+        $id = $params['beverage_id'];
+        $query = $this->db->where('Beer_id', $id)
+                          ->get('Beers');
+        
+        if(count($query->result_array())==0){
+                $this->sendResponse(200, ['details' => 'No matching beverage for id: '.$id]);    
+            } else {
+                $this->sendResponse(200, ['results' => $query->result_array()]);
+            }
+    }
+
+
     public function search(){
         if(!$this->requireParams(['searchToken'  => 'str'])) return;
         $params = $this->getParams();
