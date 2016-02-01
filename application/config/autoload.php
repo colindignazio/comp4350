@@ -78,7 +78,6 @@ $autoload['libraries'] = array('globals');
 
 $autoload['drivers'] = array();
 
-
 /*
 | -------------------------------------------------------------------
 |  Auto-load Helper Files
