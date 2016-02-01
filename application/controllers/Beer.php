@@ -17,7 +17,7 @@ class Beer extends MY_Controller {
                           ->get('Beers');
         
         if(count($query->result_array())==0){
-                $this->sendResponse(200, ['details' => 'No matching beverage for id: "'.$id.'"']);    
+                $this->sendResponse(200, ['details' => 'No matching beverage for the id: '.$id]);    
             } else {
                 $this->sendResponse(200, ['results' => $query->result_array()]);
             }
