@@ -6,6 +6,13 @@ class Search extends MY_Controller {
 	public function test() {
 		echo "test function in Search<head><title>HTML Reference</title></head>";
 	}
+	public function search() {
+		echo "<form  method='post' action='/comp4350/index.php/Search/validateSearch'  id=searchToken>";
+		echo "<input  type='text' name='searchValue'>";
+		echo "<input type='submit' name='submit' value='Search'>";
+		echo "</form>";
+		
+	}
 	public function validateSearch()
     {
 		$form_data = $this->input->post();
