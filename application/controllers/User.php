@@ -29,7 +29,8 @@ class User extends MY_Controller {
         if(!$this->requireParams([
             'userName'  => 'str',
             'password'   => 'str',
-            'email'      => 'str'
+            'email'      => 'str',
+            'location'  => 'str'
         ])) return;
         $params = $this->getParams();
         
@@ -44,6 +45,10 @@ class User extends MY_Controller {
         else if(is_null($params['userName'])) {
             $result['status'] = 400;
             $result['details'] = 'Invalid username';
+        }
+        else if(is_null($params['location'])) {
+            $result['status'] = 400;
+            $result['details'] = 'Invalid location';
         }
         else {
             $query = $this->db->where('User_name', $params['userName'])
