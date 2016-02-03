@@ -14,6 +14,15 @@ class BeerReview extends MY_Controller {
 
         $this->sendResponse(200, ['results' => $query->result_array()]);
     }
-
+	
+	public function replace($oldid, $newstars, $newreview){
+		$data = array(
+			'id' => $oldid,
+			'stars' => $newstars,
+			'review' => $newreview
+		)
+		
+		$this->db->replace('Beer_reviews', $data);
+	}
 }
 ?>
