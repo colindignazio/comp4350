@@ -20,7 +20,7 @@ class BeerReview extends MY_Controller {
 			'id' => $oldid,
 			'stars' => $newstars,
 			'review' => $newreview
-		)
+		);
 		
 		$this->db->replace('Beer_reviews', $data);
 	}
