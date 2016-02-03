@@ -180,12 +180,11 @@ class User extends MY_Controller {
 
         if(FALSE !== $user = $this->sessions->getUser($params['sessionId'])) {
             $data = ['User_location'    => $params['location']];
-                $this->db->where(['User_id' => $user['User_id']]);
-                if(!$this->db->update('Users', $data)) {
-                    $this->sendResponse(500, ['details' => 'An unknown error occurred']);
-                } else {
-                    $this->sendResponse(200);
-                }
+            $this->db->where(['User_id' => $user['User_id']]);
+            if(!$this->db->update('Users', $data)) {
+                $this->sendResponse(500, ['details' => 'An unknown error occurred']);
+            } else {
+                $this->sendResponse(200);
             }
         } else {
             $this->sendResponse(401);
