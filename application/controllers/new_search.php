@@ -58,8 +58,8 @@ class New_search extends MY_Controller {
 
     public function getResults($searchValue){
         
-        //$url = 'http://54.200.14.217/?/Beer/search';
-        $url = 'http://localhost/?/Beer/search';
+        $url = 'http://54.200.14.217/?/Beer/search';
+        //$url = 'http://localhost/?/Beer/search';
         $data = array('searchToken' => "$searchValue");
         
         $options = array(
