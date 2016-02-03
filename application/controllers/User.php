@@ -4,8 +4,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class User extends MY_Controller {
     public function __construct() {
         parent::__construct();
-        //$this->load->model('users');
-        //$this->load->model('workers');
         $this->load->model('sessions');
     }
 
@@ -166,6 +164,25 @@ class User extends MY_Controller {
                 }
             } else {
                 $this->sendResponse(400, ['details' => 'Passwords do not match']);
+            }
+        } else {
+            $this->sendResponse(401);
+        }
+    }
+
+    public function setLocation() {
+        if(!$this->requireParams([
+            'sessionId' => 'str', 
+            'location'   => 'str'])) return;
+        $params = $this->getParams();
+
+        if(FALSE !== $user = $this->sessions->getUser($params['sessionId'])) {
+            $data = ['User_location'    => $params['location']];
+            $this->db->where(['User_id' => $user['User_id']]);
+            if(!$this->db->update('Users', $data)) {
+                $this->sendResponse(500, ['details' => 'An unknown error occurred']);
+            } else {
+                $this->sendResponse(200);
             }
         } else {
             $this->sendResponse(401);
