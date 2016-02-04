@@ -10,7 +10,7 @@ class Emailer {
 
     public function sendVerificationCode($email, $code) {
         $msg = "Thank you for registering with Boozr!\nPlease verify your email address using the following code:\n\n$code";
-        $headers = 'From: Boozr <mitchellphamm@hotmail.com> \r\n';
+        $headers = 'From: Boozr <donotreply.boozr@gmail.com> \r\n';
 
         $this->sendEmail($email, "Welcome to Boozr!", $msg, $headers);
     }

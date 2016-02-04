@@ -28,6 +28,16 @@ THESE GOT TO GO PROBABLY
         $this->sendResponse(200, ['results' => $query->result_array()]);
     }
 
+    public function testEmail() {
+        if(!$this->requireParams([
+            'email'      => 'str'
+        ])) return;
+        $params = $this->getParams();
+        $email = $params['email'];
+        mail($params['email'], "test", "Hello World", "From: Boozr <$email> \r\n");
+        $this->sendResponse(200);
+    }
+
     public function createAccount() {
         if(!$this->requireParams([
             'userName'  => 'str',
