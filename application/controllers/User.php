@@ -5,8 +5,7 @@ class User extends MY_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('sessions');
-        $this->load->model('users');
-        $this->users->loadDB("User_access_object");
+        $this->load->model('user_access_object', 'user_access');
     }
 
 /**************************************************
@@ -47,7 +46,7 @@ THESE GOT TO GO PROBABLY
         ])) return;
         $params = $this->getParams();
         
-        $userInfoError = $this->users->validateUserInfo($params['userName'], $params['password'], $params['email'], $params['location']);
+        $userInfoError = $this->validateUserInfo($params['userName'], $params['password'], $params['email'], $params['location']);
 
         if(is_null($userInfoError)) {
             $emailCode = genVerificationCode();
@@ -77,6 +76,55 @@ THESE GOT TO GO PROBABLY
         else {
             $this->sendResponse(400, ['details' => $userInfoError]);
         }
+    }
+
+    private function validateUserInfo($username, $password, $email, $location) {
+        $result = null;     
+
+        if(is_null($username) || $username == "") {
+            $result = 'Invalid username';
+        } 
+        else if($this->isUsernameInUse($username)) {
+            $result = 'Username already in use';
+        }
+        else if(is_null($email) || $email == "" || !isEmail($email)) {
+            $result = 'Invalid email address';
+        }
+        else if($this->isEmailInUse($email)) {
+            $result = 'Email already in use';
+        }
+        else if(is_null($password) || $password == "") {
+            $result = 'Invalid password';
+        }
+        else if(is_null($location) || $location == "") {
+            $result = 'Invalid location';
+        }
+
+        return $result;
+    }
+
+    private function isUsernameInUse($username) {
+        $result = false;
+
+        $query = $this->user_access->getUserByName($username);
+        
+        if(count($query) > 0) {
+            $result = true;
+        }
+
+        return $result;
+    }
+
+    private function isEmailInUse($email) {
+        $result = false;
+
+        $query = $this->user_access->getUserByEmail($email);
+            
+        if(count($query) > 0) {
+            $result = true;
+        }
+
+        return $result;
     }
 
     public function login() {
