@@ -38,6 +38,6 @@ class User_test extends TestCase {
         $this->assertEquals(TRUE, $output);
 
         $output = $this->obj->isUsernameInUse('test0@yahoo.com');
-        $this->assertEquals(FALSE, $output);*/
-    }
+        $this->assertEquals(FALSE, $output);
+    }*/
 }
