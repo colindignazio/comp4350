@@ -2,7 +2,7 @@
 
 class User_test extends TestCase {
 
-    //Simple test that doesn't use the database
+    //Sample integration tests for the create account user story.
     public function test_createAccount() {
         $output = $this->request('POST', 'user/createAccount', ['userName' => 'Colin', 'password' => 'testpass', 'email' => 'colin@email.com', 'location' => 'Winnipeg']);
         $this->assertContains('Username already in use', $output);
@@ -26,8 +26,8 @@ class User_test extends TestCase {
         $this->assertNotEquals($output, null);*/
     }
 
-    //More complicated test that uses a stub database
-    public function test_isUsernameInUse() {/*
+    /*
+    public function test_isUsernameInUse() {
         $output = $this->obj->isUsernameInUse('testuser123');
         $this->assertEquals(TRUE, $output);
 
