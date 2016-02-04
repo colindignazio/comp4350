@@ -4,44 +4,45 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Beer extends MY_Controller {
     public function __construct() {
         parent::__construct();
-        //$this->load->model('sessions');
+        $this->load->model('beers');
     }
 
-    public function seachById(){
+    public function searchById(){
         if(!$this->requireParams(['beverage_id'  => 'str'])) return;
         $params = $this->getParams();
         $id = $params['beverage_id'];
-        $query = $this->db->where('Beer_id', $id)
-                          ->get('Beers');
         
-        if(count($query->result_array())==0){
+        $result = $this->beers->getById($id);
+        
+        if(count($result)==0){
                 $this->sendResponse(200, ['details' => 'No matching beverage for ID: '.$id]);    
             } else {
-                $this->sendResponse(200, ['results' => $query->result_array()]);
+                $this->sendResponse(200, ['results' => $result]);
             }
     }
-
 
     public function search(){
         if(!$this->requireParams(['searchToken'  => 'str'])) return;
         $params = $this->getParams();
-        $searchToken = $params['searchToken'];
-        if(strlen($searchToken)<3){
+        $token = $params['searchToken'];
+        if(strlen($token)<3){
             $this->sendResponse(400, ['details' => 'Search token too short']);
         } else {
-            $nameQuery = $this->db->query("SELECT * from Beers WHERE Name LIKE '%$searchToken%'"); 
-            $breweryQuery = $this->db->query("SELECT * from Beers WHERE Brewery LIKE '%$searchToken%'"); 
-            $typeQuery = $this->db->query("SELECT * from Beers WHERE Type LIKE '%$searchToken%'");
-
+            
             $responseArray = [];
-            if (count($nameQuery->result_array())>0){
-                $responseArray = array_merge($responseArray, ['nameMatches' => $nameQuery->result_array()]);
+            $nameMatches = $this->beers->getByName($token);
+            $breweryMatches = $this->beers->getByBrewery($token);
+            $typeMatches = $this->beers->getByType($token);
+
+            
+            if (count($nameMatches)>0){
+                $responseArray = array_merge($responseArray, ['nameMatches' => $nameMatches]);
             }
-            if (count($breweryQuery->result_array())>0){
-                $responseArray = array_merge($responseArray, ['breweryMatches' => $breweryQuery->result_array()]);
+            if (count($breweryMatches)>0){
+                $responseArray = array_merge($responseArray, ['breweryMatches' => $breweryMatches]);
             }
-            if (count($typeQuery->result_array())>0){
-                $responseArray = array_merge($responseArray, ['typeMatches' => $typeQuery->result_array()]);
+            if (count($typeMatches)>0){
+                $responseArray = array_merge($responseArray, ['typeMatches' => $typeMatches]);
             }
 
             if(count($responseArray)==0){
@@ -55,9 +56,7 @@ class Beer extends MY_Controller {
     }
 
     public function All() {
-        $query = $this->db->get('Beers');
-                          
-        $this->sendResponse(200, ['results' => $query->result_array()]);
+        $this->sendResponse(200, ['results' => $this->beers->getAll()]);
     }
 
 }
