@@ -56,8 +56,8 @@ class Beer_review_model extends CI_Model {
 
         //Insert the updated data into the database
         $this->db->where('id', $reviewId);
-        $this->db->update('Beer_reviews', $data);
-        return;
+        return $this->db->update('Beer_reviews', $data);
+
     }
 
 
