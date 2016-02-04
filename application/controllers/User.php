@@ -5,6 +5,7 @@ class User extends MY_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('sessions');
+        $this->load->model('users');
     }
 
     public function tesst(){
@@ -32,23 +33,9 @@ class User extends MY_Controller {
         ])) return;
         $params = $this->getParams();
         
-        if(is_null($params['email']) || !isEmail($params['email'])) {
-            $result['status'] = 400;
-            $result['details'] = 'Invalid email address';
-        }
-        else if(is_null($params['password'])) {
-            $result['status'] = 400;
-            $result['details'] = 'Invalid password';
-        }
-        else if(is_null($params['userName'])) {
-            $result['status'] = 400;
-            $result['details'] = 'Invalid username';
-        }
-        else if(is_null($params['location'])) {
-            $result['status'] = 400;
-            $result['details'] = 'Invalid location';
-        }
-        else {
+        $userInfoError = $this->users->validateUserInfo($params['userName'], $params['password'], $params['email'], $params['location']);
+
+        if(is_null($userInfoError)) {
             $query = $this->db->where('User_name', $params['userName'])
                           ->get('Users');
             if(count($query->result_array()) > 0) {
@@ -86,6 +73,9 @@ class User extends MY_Controller {
                 unset($data['User_email_code']);
                 $this->sendResponse(200, ['user' => $data, 'sessionId' => $sessionId]);
             }
+        } 
+        else {
+            $this->sendResponse(400, ['details' => $userInfoError]);
         }
     }
 
@@ -189,4 +179,3 @@ class User extends MY_Controller {
         }
     }
 }
-?>
