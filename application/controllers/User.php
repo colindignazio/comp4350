@@ -6,8 +6,12 @@ class User extends MY_Controller {
         parent::__construct();
         $this->load->model('sessions');
         $this->load->model('users');
+        $this->users->loadDB("User_access_object");
     }
 
+/**************************************************
+THESE GOT TO GO PROBABLY
+***************************************************/
     public function tesst(){
         echo mysql_now();
     }
@@ -36,20 +40,6 @@ class User extends MY_Controller {
         $userInfoError = $this->users->validateUserInfo($params['userName'], $params['password'], $params['email'], $params['location']);
 
         if(is_null($userInfoError)) {
-            $query = $this->db->where('User_name', $params['userName'])
-                          ->get('Users');
-            if(count($query->result_array()) > 0) {
-                $this->sendResponse(400, ['details' => 'Username in already in use']);
-                return;
-            }
-
-            $query = $this->db->where('User_email', $params['email'])
-                          ->get('Users');
-            if(count($query->result_array()) > 0) {
-                $this->sendResponse(400, ['details' => 'Email in already in use']);
-                return;
-            }
-
             $emailCode = genVerificationCode();
             // Insert row into users table
             $data = [
