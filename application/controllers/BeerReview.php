@@ -29,9 +29,9 @@ class BeerReview extends MY_Controller {
         $token = $params['searchToken'];
 
         $responseArray = [];
-        $beerMatches = $this->beers->searchByBeer($token);
-        $userMatches = $this->beers->searchByUser($token);
-        $starMatches = $this->beers->searchByStars($token);
+        $beerMatches = $this->Beer_review_model->searchByBeer($token);
+        $userMatches = $this->Beer_review_model->searchByUser($token);
+        $starMatches = $this->Beer_review_model->searchByStars($token);
 
 
         if (count($beerMatches)>0){
