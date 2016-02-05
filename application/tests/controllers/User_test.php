@@ -14,8 +14,7 @@ class User_test extends TestCase {
         $this->assertEquals('400', $output['status']);
 
         $output = $this->obj->createAccount('unique', 'test', 'mitchellphamm@hotmail.com', 'Winnipeg');
-        $this->assertEquals('Username already in use', $output['details']);
-        $this->assertEquals('400', $output['status']);
+        $this->assertEquals('200', $output['status']);
 
         $output = $this->obj->validateUserInfo("TestUsr1", "testpass", "test@email.com", "Winnipeg");
         $this->assertEquals($output, null);
