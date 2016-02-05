@@ -15,6 +15,10 @@ class User_access_object extends CI_Model {
 		return $this->db->where('User_email', $email)->get('Users');
     }
 
+    public function removeUser($userId) {
+        return $this->db->where('User_id', $userId)->delete('Users');
+    }
+
     public function getUserById($userId) {
         return $this->db->where('User_id', $userId)->get('Users');
     }

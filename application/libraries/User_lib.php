@@ -42,6 +42,29 @@ class User_lib {
         return $result;
     }
 
+    public function deleteAccount($username, $password) {
+        $query = $this->CI->user_access->getUserByName($username);
+        if(count($query->result_array()) > 0) {
+            $user = $query->row_array();
+
+            if(password_verify($password, $user['User_password'])) {
+                if(!$this->CI->user_access->removeUser($user['User_id'])) {
+                    $result['status'] = 500;
+                    $result['details'] = 'An unknown error occurred';
+                } else {
+                    $result['status'] = 200;
+                }
+            } else {
+                $result['status'] = 400;
+                $result['details'] = 'Invalid username or password';
+            }
+        } else {
+            $result['status'] = 400;
+            $result['details'] = 'Invalid username or password';
+        }
+        return $result;
+    }
+
     public function login($username, $password) {
         $query = $this->CI->user_access->getUserByName($username);
         if(count($query->result_array()) > 0) {

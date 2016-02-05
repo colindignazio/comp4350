@@ -9,11 +9,13 @@ class User_test extends TestCase {
 
     //Sample integration tests for the create account user story.
     public function test_createAccount() {
-        //$output = $this->request('POST', 'user/createAccount', ['userName' => 'Colin', 'password' => 'testpass', 'email' => 'colin@email.com', 'location' => 'Winnipeg']);
-        //$this->assertContains('Username already in use', $output);
+        $output = $this->obj->createAccount('Colin', 'test', 'colin@email.com', 'Winnipeg');
+        $this->assertEquals('Username already in use', $output['details']);
+        $this->assertEquals('400', $output['status']);
 
-        //$output = $this->request('POST', 'user/createAccount', ['userName' => 'uniqueusername1324343', 'password' => 'testpass', 'email' => 'mitchellphamm@hotmail.com', 'location' => 'Winnipeg']);
-        //$this->assertContains('Email already in use', $output);
+        $output = $this->obj->createAccount('unique', 'test', 'mitchellphamm@hotmail.com', 'Winnipeg');
+        $this->assertEquals('Username already in use', $output['details']);
+        $this->assertEquals('400', $output['status']);
 
         $output = $this->obj->validateUserInfo("TestUsr1", "testpass", "test@email.com", "Winnipeg");
         $this->assertEquals($output, null);
@@ -31,101 +33,65 @@ class User_test extends TestCase {
         $this->assertNotEquals($output, null);
     }
 
-    /*
-    public function test_isUsernameInUse() {
-        $output = $this->obj->isUsernameInUse('testuser123');
-        $this->assertEquals(TRUE, $output);
-
-        $output = $this->obj->isUsernameInUse('testuser1234');
-        $this->assertEquals(FALSE, $output);
-
-        $output = $this->obj->isEmailInUse('test0@email.com');
-        $this->assertEquals(TRUE, $output);
-
-        $output = $this->obj->isUsernameInUse('test0@yahoo.com');
-        $this->assertEquals(FALSE, $output);
-    }*/
-/*
     public function test_Login() {
-        $output = $this->request('POST', 'user/login', ['userName' => 'invalid', 'password' => 'invalid']);
-        $this->assertContains('Invalid username or password', $output);
-
-        var_dump($output);
-        die();
-        $output = $this->request('POST', 'user/login', ['userName' => 'testuser123', 'password' => 'invalid']);
-        $this->assertContains('Invalid username or password', $output);
-        $output = $this->request('POST', 'user/login', ['userName' => 'invalid', 'password' => 'testpass']);
-        $this->assertContains('Invalid username or password', $output);
-        $output = $this->request('POST', 'user/login', ['userName' => 'Chuffy', 'password' => 'testpass']);
-        $this->assertContains('OK', $output);
+        $output = $this->obj->login('invalid', 'invalid');
+        $this->assertEquals('400', $output['status']);
+        $output = $this->obj->login('Chuffy', 'invalid');
+        $this->assertEquals('400', $output['status']);
+        $output = $this->obj->login('invalid', 'testpass');
+        $this->assertEquals('400', $output['status']);
+        $output = $this->obj->login('Chuffy', 'testpass');
+        $this->assertEquals('200', $output['status']);
     }
 
     public function test_SetUsername() {
         //Calls that shouldn't allow user access
-        $output = $this->request('POST', 'user/setUsername', []);
-        $this->assertContains('Parameter(s) missing', $output);
-        $output = $this->request('POST', 'user/setUsername', ['userName' => 'too few params']);
-        $this->assertContains('Parameter(s) missing', $output);
-        $output = $this->request('POST', 'user/setUsername', ['sessionId' => '0']);
-        $this->assertContains('Parameter(s) missing', $output);
-        $output = $this->request('POST', 'user/setUsername', ['sessionId' => '0', 'userName' => 'Chuffy2']);
-        $this->assertContains('Unauthorized', $output);
-*/
-/*
+        $output = $this->obj->setUsername('0', 'Chuffy2');
+        $this->assertEquals('401', $output['status']);
+
+
         //Call to login and get a sessionId
-        $sessionId = $this->request('POST', 'user/login', ['userName' => 'Chuffy', 'password' => 'testpass']);
-        $this->assertNotEquals($output, null);
+        $response = $this->obj->login('Chuffy', 'testpass');
+        $this->assertNotEquals($output['sessionId'], null);
         //Valid setUsername call
-        $output = $this->request('POST', 'user/setUsername', ['sessionId' => $sessionId, 'userName' => 'Chuffy2']);
-        $this->assertContains('OK', $output);
+        $output = $this->obj->setUsername($response['sessionId'], 'Chuffy2');
+        $this->assertEquals('200', $output['status']);
         //"Rollback test"
-        $output = $this->request('POST', 'user/setUsername', ['sessionId' => $sessionId, 'userName' => 'Chuffy']);
-        $this->assertContains('OK', $output);*/
-  //  }
-/*
+        $output = $this->obj->setUsername($response['sessionId'], 'Chuffy');
+        $this->assertEquals('200', $output['status']);
+    }
+
     public function test_SetPassword() {
         //Calls that shouldn't allow user access
-        $output = $this->request('POST', 'user/setPassword', []);
-        $this->assertContains('Parameter(s) missing', $output);
-        $output = $this->request('POST', 'user/setPassword', ['password' => 'too few params']);
-        $this->assertContains('Parameter(s) missing', $output);
-        $output = $this->request('POST', 'user/setPassword', ['sessionId' => '0']);
-        $this->assertContains('Parameter(s) missing', $output);
-        $output = $this->request('POST', 'user/setPassword', ['sessionId' => '0', 'oldPass' => 'testpass', 'newPass' => 'testpass2']);
-        $this->assertContains('Unauthorized', $output);
+        $output = $this->obj->setPassword('0', 'testpass', 'testpass2');
+        $this->assertEquals('401', $output['status']);
 
 
         //Call to login and get a sessionId
-        $sessionId = $this->request('POST', 'user/login', ['userName' => 'Chuffy', 'password' => 'testpass']);
-        $this->assertNotEquals($output, null);
+        $response = $this->obj->login('Chuffy', 'testpass');
+        $this->assertNotEquals($output['sessionId'], null);
         //Valid setUsername call
-        $output = $this->request('POST', 'user/setPassword', ['sessionId' => $sessionId, 'oldPass' => 'testpass', 'newPass' => 'testpass2']);
-/*        $this->assertContains('OK', $output);
+        $output = $this->obj->setPassword($response['sessionId'], 'testpass', 'testpass2');
+        $this->assertEquals('200', $output['status']);
         //"Rollback test"
-        $output = $this->request('POST', 'user/setPassword', ['sessionId' => $sessionId, 'oldPass' => 'testpass2', 'newPass' => 'testpass']);
-        $this->assertContains('OK', $output);*/
-    //}
+        $output = $this->obj->setPassword($response['sessionId'], 'testpass2', 'testpass');
+        $this->assertEquals('200', $output['status']);
+    }
 
-/*    public function test_SetLocation() {
+    public function test_SetLocation() {
         //Calls that shouldn't allow user access
-        $output = $this->request('POST', 'user/setLocation', []);
-        $this->assertContains('Parameter(s) missing', $output);
-        $output = $this->request('POST', 'user/setLocation', ['location' => 'too few params']);
-        $this->assertContains('Parameter(s) missing', $output);
-        $output = $this->request('POST', 'user/setLocation', ['sessionId' => '0']);
-        $this->assertContains('Parameter(s) missing', $output);
-        $output = $this->request('POST', 'user/setLocation', ['sessionId' => '0', 'location' => 'The Moon']);
-        $this->assertContains('Unauthorized', $output);
+        $output = $this->obj->setLocation('0', 'The Moon');
+        $this->assertEquals('401', $output['status']);
 
-/*
+
         //Call to login and get a sessionId
-        $sessionId = $this->request('POST', 'user/login', ['userName' => 'Chuffy', 'password' => 'testpass']);;
-        $this->assertNotEquals($output, null);
+        $response = $this->obj->login('Chuffy', 'testpass');
+        $this->assertNotEquals($output['sessionId'], null);
         //Valid setUsername call
-        $output = $this->request('POST', 'user/setLocation', ['sessionId' => $sessionId, 'location' => 'The Moon']);
-        $this->assertContains('OK', $output);
+        $output = $this->obj->setLocation($response['sessionId'], 'The Moon');
+        $this->assertEquals('200', $output['status']);
         //"Rollback test"
-        $output = $this->request('POST', 'user/setLocation', ['sessionId' => $sessionId, 'location' => 'Winnipeg']);
-        $this->assertContains('OK', $output);*/
- //   }
+        $output = $this->obj->setLocation($response['sessionId'], 'Winnipeg');
+        $this->assertEquals('200', $output['status']);
+    }
 }
