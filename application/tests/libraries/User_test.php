@@ -43,21 +43,16 @@ class User_test extends TestCase {
         $this->assertEquals('200', $output['status']);
     }
 
-/*
     public function test_SetUsername() {
         //Calls that shouldn't allow user access
         $output = $this->obj->setUsername('453', 'Chuffy2');
         $this->assertEquals('401', $output['status']);
 
-
-        //Call to login and get a sessionId
-        $response = $this->obj->login('testuser123', 'testpass');
-        $this->assertNotEquals($output['sessionId'], null);
         //Valid setUsername call
-        $output = $this->obj->setUsername($response['sessionId'], 'Chuffy2');
+        $output = $this->obj->setUsername('3', 'Chuffy2');
         $this->assertEquals('200', $output['status']);
         //"Rollback test"
-        $output = $this->obj->setUsername($response['sessionId'], 'Chuffy');
+        $output = $this->obj->setUsername('3', 'Chuffy');
         $this->assertEquals('200', $output['status']);
     }
 
@@ -66,14 +61,11 @@ class User_test extends TestCase {
         $output = $this->obj->setPassword('453', 'testpass', 'testpass2');
         $this->assertEquals('401', $output['status']);
 
-        //Call to login and get a sessionId
-        $response = $this->obj->login('testuser123', 'testpass');
-        $this->assertNotEquals($response['sessionId'], null);
         //Valid setUsername call
-        $output = $this->obj->setPassword($response['sessionId'], 'testpass', 'testpass2');
+        $output = $this->obj->setPassword('3', 'testpass', 'testpass2');
         $this->assertEquals('200', $output['status']);
         //"Rollback test"
-        $output = $this->obj->setPassword($response['sessionId'], 'testpass2', 'testpass');
+        $output = $this->obj->setPassword('3', 'testpass2', 'testpass');
         $this->assertEquals('200', $output['status']);
     }
 
@@ -82,16 +74,11 @@ class User_test extends TestCase {
         $output = $this->obj->setLocation('453', 'The Moon');
         $this->assertEquals('401', $output['status']);
 
-
-        //Call to login and get a sessionId
-        $response = $this->obj->login('Chuffy', 'testpass');
-        $this->assertNotEquals($output['sessionId'], null);
         //Valid setUsername call
-        $output = $this->obj->setLocation($response['sessionId'], 'The Moon');
+        $output = $this->obj->setLocation('3', 'The Moon');
         $this->assertEquals('200', $output['status']);
         //"Rollback test"
-        $output = $this->obj->setLocation($response['sessionId'], 'Winnipeg');
+        $output = $this->obj->setLocation('3', 'Winnipeg');
         $this->assertEquals('200', $output['status']);
     }
-*/
 }
