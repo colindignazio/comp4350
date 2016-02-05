@@ -13,7 +13,7 @@ class Beer_lib {
     	if(count($beer) == 0) {
     		return null;
         } else {
-        	return $beer[0];
+        	return $beer;
         }
     }
 
