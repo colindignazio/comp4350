@@ -8,11 +8,11 @@ class User_access_object extends CI_Model {
     }
 
     public function getUserByName($username) {
-    	return $this->db->where('User_name', $username)->get('Users');
+    	return $this->db->where('User_name', $username)->get('Users')->result_array();
     }
 
     public function getUserByEmail($email) {
-		return $this->db->where('User_email', $email)->get('Users');
+		return $this->db->where('User_email', $email)->get('Users')->result_array();
     }
 
     public function getUserById($userId) {
