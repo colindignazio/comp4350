@@ -64,7 +64,7 @@ THESE GOT TO GO PROBABLY
             else {
                 $this->load->library('emailer');
                 $this->emailer->sendVerificationCode($params['email'], $emailCode);
-                $userId = $this->access_user->insert_id();
+                $userId = $this->user_access->insert_id();
                 $sessionId = $this->sessions->createSession($userId);
                 unset($data['User_password']);
                 unset($data['User_email_code']);
@@ -104,7 +104,7 @@ THESE GOT TO GO PROBABLY
     private function isUsernameInUse($username) {
         $result = false;
 
-        $query = $this->user_access->getUserByName($username);
+        $query = $this->user_access->getUserByName($username)->result_array();
         
         if(count($query) > 0) {
             $result = true;
@@ -116,7 +116,7 @@ THESE GOT TO GO PROBABLY
     private function isEmailInUse($email) {
         $result = false;
 
-        $query = $this->user_access->getUserByEmail($email);
+        $query = $this->user_access->getUserByEmail($email)->result_array();
             
         if(count($query) > 0) {
             $result = true;
@@ -222,4 +222,3 @@ THESE GOT TO GO PROBABLY
         }
     }
 }
-

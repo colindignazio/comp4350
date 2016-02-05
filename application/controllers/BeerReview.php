@@ -23,7 +23,37 @@ class BeerReview extends MY_Controller {
         }
     }
 
+    public function search(){
+        if(!$this->requireParams(['searchToken'  => 'str'])) return;
+        $params = $this->getParams();
+        $token = $params['searchToken'];
 
+        $responseArray = [];
+        $beerMatches = $this->Beer_review_model->searchByBeer($token);
+        $userMatches = $this->Beer_review_model->searchByUser($token);
+        $starMatches = $this->Beer_review_model->searchByStars($token);
+        $idMatches = $this->Beer_review_model->searchById($token);
+
+        if (count($idMatches)>0){
+            $responseArray = array_merge($responseArray, ['beerMatches' => $idMatches->result_array()]);
+        }
+
+        if (count($beerMatches)>0){
+            $responseArray = array_merge($responseArray, ['beerMatches' => $beerMatches]);
+        }
+        if (count($userMatches)>0){
+            $responseArray = array_merge($responseArray, ['userMatches' => $userMatches]);
+        }
+        if (count($starMatches)>0){
+            $responseArray = array_merge($responseArray, ['starMatches' => $starMatches]);
+        }
+
+        if(count($responseArray)==0){
+            $this->sendResponse(200, ['details' => 'No matching results']);
+        } else {
+            $this->sendResponse(200, $responseArray);
+        }
+    }
 
     public function create()
     {

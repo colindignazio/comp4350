@@ -21,6 +21,30 @@ class Beer_review_stub extends CI_Model {
         }
     }
 
+    public function searchByStars($id){
+        foreach($this->table as $entry){
+            if($entry['id'] ==  $id){
+                return array($entry);
+            }
+        }
+    }
+
+    public function searchByBeer($id){
+        foreach($this->table as $entry){
+            if($entry['id'] ==  $id){
+                return array($entry);
+            }
+        }
+    }
+
+    public function searchByUser($id){
+        foreach($this->table as $entry){
+            if($entry['id'] ==  $id){
+                return array($entry);
+            }
+        }
+    }
+
     public function All(){
         return $this->table;
     }

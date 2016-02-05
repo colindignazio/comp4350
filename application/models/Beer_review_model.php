@@ -21,6 +21,21 @@ class Beer_review_model extends CI_Model {
         return $this->db->where('id', $id)->get('Beer_reviews');
     }
 
+    public function searchByBeer($id){
+       $query = $this->db->where('beer_id', $id)->get('Beer_reviews');
+        return $query->result_array();
+    }
+
+    public function searchByUser($id){
+        $query = $this->db->where('user_id', $id)->get('Beer_reviews');
+        return $query->result_array();
+    }
+
+    public function searchByStars($id){
+        $query = $this->db->where('stars', $id)->get('Beer_reviews');
+        return $query->result_array();
+    }
+
     public function All(){
         $query = $this->db->get('Beer_reviews');
         return $query->result_array();
