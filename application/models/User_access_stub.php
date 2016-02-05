@@ -47,6 +47,14 @@ class User_access_stub extends CI_Model {
         }
     }
 
+    public function getUserByIdRow($userId) {
+        foreach($this->table as $entry) {
+            if($entry['User_id'] == $userId) {
+                return $entry;
+            }
+        }
+    }
+
     public function removeUser($userId) {
         return true;
     }

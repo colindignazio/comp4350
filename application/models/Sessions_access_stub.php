@@ -31,6 +31,22 @@ class Sessions_access_stub extends CI_Model {
         }
     }
 
+    public function getBySessionRow($sessionId) {
+        foreach($this->table as $entry) {
+            if($entry['Session_id'] == $sessionId) {
+                return $entry;
+            }
+        }
+    }
+
+    public function getByUserRow($userId) {
+        foreach($this->table as $entry) {
+            if($entry['User_id'] == $userId) {
+                return $entry;
+            }
+        }
+    }
+
     public function updateSession($oldSession, $newSession) {
         foreach($this->table as $entry) {
             if($entry['Session_id'] == $oldSession) {
