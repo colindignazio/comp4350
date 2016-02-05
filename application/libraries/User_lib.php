@@ -44,8 +44,8 @@ class User_lib {
 
     public function deleteAccount($username, $password) {
         $query = $this->CI->user_access->getUserByName($username);
-        if(count($query->result_array()) > 0) {
-            $user = $query->row_array();
+        if(count($query) > 0) {
+            $user = $this->CI->user_access->getUserByNameRow($username);
 
             if(password_verify($password, $user['User_password'])) {
                 if(!$this->CI->user_access->removeUser($user['User_id'])) {
@@ -67,8 +67,8 @@ class User_lib {
 
     public function login($username, $password) {
         $query = $this->CI->user_access->getUserByName($username);
-        if(count($query->result_array()) > 0) {
-            $user = $query->row_array();
+        if(count($query) > 0) {
+            $user = $this->CI->user_access->getUserByNameRow($username);
 
             if(password_verify($password, $user['User_password'])) {
                 unset($user['User_password']);
@@ -182,7 +182,7 @@ class User_lib {
 
         $query = $this->CI->user_access->getUserByName($username);
         
-        if(count($query->result_array()) > 0) {
+        if(count($query) > 0) {
             $result = true;
         }
 
@@ -194,7 +194,7 @@ class User_lib {
 
         $query = $this->CI->user_access->getUserByEmail($email);
             
-        if(count($query->result_array()) > 0) {
+        if(count($query) > 0) {
             $result = true;
         }
 

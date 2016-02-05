@@ -48,4 +48,12 @@ class Beer_review_stub extends CI_Model {
     public function All(){
         return $this->table;
     }
+
+    public function create($data){
+        return true
+    }
+
+    public function updateReview($data, $reviewId){
+        return true;
+    }
 }

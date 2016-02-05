@@ -23,6 +23,14 @@ class User_access_stub extends CI_Model {
         }
     }
 
+    public function getUserByNameRow($username) {
+        foreach($this->table as $entry) {
+            if($entry['User_name'] == $username) {
+                return $entry;
+            }
+        }
+    }
+
     public function getUserByEmail($email) {
         foreach($this->table as $entry) {
             if($entry['User_email'] == $email) {
@@ -40,6 +48,34 @@ class User_access_stub extends CI_Model {
     }
 
     public function removeUser($userId) {
-        
+        return true;
+    }
+
+    public function createAccount($data) {
+        return true;
+    }
+
+    public function login($username) {
+        return true;
+    }
+
+    public function logout($sessionId) {
+        return true;
+    }   
+
+    public function insert_id(){
+        return true;
+    }
+
+    public function lastError(){
+        return true;
+    }
+
+    public function update($userId, $data){
+        return true;
+    }
+
+    public function testDatabase(){
+        return true;
     }
 }
