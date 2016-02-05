@@ -27,8 +27,8 @@ class User_lib {
                 $result = ['status' => 500, 'details' => 'An unknown error occurred'];
             }
             else {
-                $this->CI->load->library('emailer');
-                $this->CI->emailer->sendVerificationCode($params['email'], $emailCode);
+                //$this->CI->load->library('emailer');
+                //$this->CI->emailer->sendVerificationCode($params['email'], $emailCode);
                 $userId = $this->CI->user_access->insert_id();
                 $sessionId = $this->CI->sessions->createSession($userId);
                 unset($data['User_password']);
@@ -133,7 +133,7 @@ class User_lib {
                 $result = ['status' => 400, 'details' => 'Passwords do not match'];
             }
         } else {
-            $result['status'] == 401;
+            $result['status'] = 401;
         }
         return $result;
     }
