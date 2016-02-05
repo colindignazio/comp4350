@@ -32,7 +32,11 @@ class BeerReview extends MY_Controller {
         $beerMatches = $this->Beer_review_model->searchByBeer($token);
         $userMatches = $this->Beer_review_model->searchByUser($token);
         $starMatches = $this->Beer_review_model->searchByStars($token);
+        $idMatches = $this->Beer_review_model->searchById($token);
 
+        if (count($idMatches)>0){
+            $responseArray = array_merge($responseArray, ['beerMatches' => $idMatches->result_array()]);
+        }
 
         if (count($beerMatches)>0){
             $responseArray = array_merge($responseArray, ['beerMatches' => $beerMatches]);
