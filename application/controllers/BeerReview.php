@@ -23,42 +23,31 @@ class BeerReview extends MY_Controller {
         }
     }
 
-    public function searchByBeer(){
-        if(!$this->requireParams(['beer_id'  => 'str'])) return;
+    public function search(){
+        if(!$this->requireParams(['searchToken'  => 'str'])) return;
         $params = $this->getParams();
-        $id = $params['beer_id'];
-        $query = $this->Beer_review_model->searchByBeer($id);
+        $token = $params['searchToken'];
 
-        if(count($query->result_array())==0){
-            $this->sendResponse(200, ['details' => 'No matching review for beer_id: '.$id]);
-        } else {
-            $this->sendResponse(200, ['results' => $query->result_array()]);
+        $responseArray = [];
+        $beerMatches = $this->beers->searchByBeer($token);
+        $userMatches = $this->beers->searchByUser($token);
+        $starMatches = $this->beers->searchByStars($token);
+
+
+        if (count($beerMatches)>0){
+            $responseArray = array_merge($responseArray, ['beerMatches' => $beerMatches]);
         }
-    }
-
-    public function searchByUser(){
-        if(!$this->requireParams(['user_id'  => 'str'])) return;
-        $params = $this->getParams();
-        $id = $params['user_id'];
-        $query = $this->Beer_review_model->searchByUser($id);
-
-        if(count($query->result_array())==0){
-            $this->sendResponse(200, ['details' => 'No matching review for user_id: '.$id]);
-        } else {
-            $this->sendResponse(200, ['results' => $query->result_array()]);
+        if (count($userMatches)>0){
+            $responseArray = array_merge($responseArray, ['userMatches' => $userMatches]);
         }
-    }
+        if (count($starMatches)>0){
+            $responseArray = array_merge($responseArray, ['starMatches' => $starMatches]);
+        }
 
-    public function searchByStars(){
-        if(!$this->requireParams(['stars'  => 'str'])) return;
-        $params = $this->getParams();
-        $stars = $params['stars'];
-        $query = $this->Beer_review_model->searchByStars($stars);
-
-        if(count($query->result_array())==0){
-            $this->sendResponse(200, ['details' => 'No matching review for stars: '.$stars]);
+        if(count($responseArray)==0){
+            $this->sendResponse(200, ['details' => 'No matching results']);
         } else {
-            $this->sendResponse(200, ['results' => $query->result_array()]);
+            $this->sendResponse(200, $responseArray);
         }
     }
 
