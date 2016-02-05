@@ -40,6 +40,6 @@ class User_access_stub extends CI_Model {
     }
 
     public function removeUser($userId) {
-
+        
     }
 }
