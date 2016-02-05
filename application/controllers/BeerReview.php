@@ -7,6 +7,7 @@ class BeerReview extends MY_Controller {
         //$this->load->model('sessions');
         $this->load->model('Beer_review_model');
         $this->load->model('Beer_review_stub');
+        $this->load->library('BeerReview_lib');
     }
 
 
@@ -14,13 +15,9 @@ class BeerReview extends MY_Controller {
         if(!$this->requireParams(['review_id'  => 'str'])) return;
         $params = $this->getParams();
         $id = $params['review_id'];
-        $query = $this->Beer_review_model->searchById($id);
 
-        if(count($query->result_array())==0){
-            $this->sendResponse(200, ['details' => 'No matching review for ID: '.$id]);
-        } else {
-            $this->sendResponse(200, ['results' => $query->result_array()]);
-        }
+        $result = $this->beerreview_lib->getReviewById($id);
+        $this->sendResponse($result['status'], ['results' => $result['details']]);
     }
 
     public function search(){
@@ -28,31 +25,8 @@ class BeerReview extends MY_Controller {
         $params = $this->getParams();
         $token = $params['searchToken'];
 
-        $responseArray = [];
-        $beerMatches = $this->Beer_review_model->searchByBeer($token);
-        $userMatches = $this->Beer_review_model->searchByUser($token);
-        $starMatches = $this->Beer_review_model->searchByStars($token);
-        $idMatches = $this->Beer_review_model->searchById($token);
-
-        if (count($idMatches)>0){
-            $responseArray = array_merge($responseArray, ['beerMatches' => $idMatches->result_array()]);
-        }
-
-        if (count($beerMatches)>0){
-            $responseArray = array_merge($responseArray, ['beerMatches' => $beerMatches]);
-        }
-        if (count($userMatches)>0){
-            $responseArray = array_merge($responseArray, ['userMatches' => $userMatches]);
-        }
-        if (count($starMatches)>0){
-            $responseArray = array_merge($responseArray, ['starMatches' => $starMatches]);
-        }
-
-        if(count($responseArray)==0){
-            $this->sendResponse(200, ['details' => 'No matching results']);
-        } else {
-            $this->sendResponse(200, $responseArray);
-        }
+        $result = $this->beerreview_lib->getSearchResults($token);
+        $this->sendResponse($result['status'], ['details' => $result['details']]);
     }
 
     public function create()
@@ -72,43 +46,20 @@ class BeerReview extends MY_Controller {
         $review = $params['review'];
         $price = $params['price'];
 
+        $result = $this->beerreview_lib->createBeerReview($beerId, $userId, $storeId, $stars, $review, $price);
 
-        //For some reason price is being set to 0
-        if($storeId == null)
-        {
-            $data = [
-                'beer_id'   => intval($beerId),
-                'user_id'   => intval($userId),
-                'store_id'  => null,
-                'stars'     => intval($stars),
-                'review'    => $review,
-                'price'     => floatval($price)
-            ];
-        }
-        else
-        {
-            $data = [
-                'beer_id'   => intval($beerId),
-                'user_id'   => intval($userId),
-                'store_id'  => intval($storeId),
-                'stars'     => intval($stars),
-                'review'    => $review,
-                'price'     => floatval($price)
-            ];
-        }
-
-        if(!$this->Beer_review_model->create($data)) {
-            $this->sendResponse(500, ['details' => 'An unknown error occurred']);
+        if($result['status'] == 200) {
+            $this->sendResponse($result['status'], ['review' => $result['details']]);            
         }
         else {
-            $this->sendResponse(200, ['review' => $data]);
+            $this->sendResponse($result['status'], ['details' => $result['details']]);                 
         }
     }
 
 
     public function All() {
-        $query = $this->Beer_review_model->All();
-        $this->sendResponse(200, ['results' => $query]);
+        $result = $this->beerreview_lib->getAllReviews();
+        $this->sendResponse($result['status'], ['results' => $result['details']]);
     }
 
     //Used to overwrite the actual 'review' elements, ie stars and review
@@ -131,24 +82,13 @@ class BeerReview extends MY_Controller {
         $review = $params['review'];
         $price = $params['price'];
 
+        $result = $this->beerreview_lib->updateReview($reviewId, $beerId, $userId, $storeId, $stars, $review, $price);
 
-        $data = array(
-            'beer_id'   => intval($beerId),
-            'user_id'   => intval($userId),
-            'store_id'  => intval($storeId),
-            'stars'     => intval($stars),
-            'review'    => $review,
-            'price'     => floatval($price)
-        );
-
-
-        if(!$this->Beer_review_model->updateReview($data, $reviewId)) {
-            $this->sendResponse(500, ['details' => 'An unknown error occurred']);
+        if($result['status'] == 200) {
+            $this->sendResponse($result['status'], ['review' => $result['details']]);            
         }
         else {
-            $this->sendResponse(200, ['review' => $data]);
+            $this->sendResponse($result['status'], ['details' => $result['details']]);                 
         }
-
     }
 }
-?>
