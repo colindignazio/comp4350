@@ -5,6 +5,7 @@ class Beer extends MY_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('beers');
+        $this->load->model('Beers_stub');
     }
 
     public function searchById(){
