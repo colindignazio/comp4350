@@ -7,7 +7,7 @@ class Beer extends MY_Controller {
         $this->load->library('Beer_lib');
     }
 
-    public function searchById() {
+    public function searchById(){
         if(!$this->requireParams(['beverage_id'  => 'str'])) return;
         $params = $this->getParams();
         $id = $params['beverage_id'];
@@ -18,7 +18,7 @@ class Beer extends MY_Controller {
             $this->sendResponse(400, ['details' => 'No matching beverage for ID: ' . $id]);    
         }
         else {
-            $this->sendResponse(200, ['details' => $beer]);
+            $this->sendResponse(200, ['results' => $beer]);
         }        
     }
 
@@ -35,7 +35,7 @@ class Beer extends MY_Controller {
         elseif(count($results) == 0) {
             $this->sendResponse(200, ['details' => 'No matching results']);    
         } else {
-            $this->sendResponse(200, 'results' => $results);  
+            $this->sendResponse(200, $results);  
         }
     }
 
