@@ -1,6 +1,6 @@
 <?php
 
-class Beer_test extends TestCase {
+class Beer_review_test extends TestCase {
     public function setUp() {
         $this->resetInstance();
         $this->CI->load->library('BeerReview_lib', array(0 => 'Beer_review_stub'));
