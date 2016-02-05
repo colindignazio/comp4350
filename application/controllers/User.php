@@ -108,7 +108,7 @@ THESE GOT TO GO PROBABLY
 
         $query = $this->user_access->getUserByName($username);
         
-        if(count($query) > 0) {
+        if(count($query->result_array()) > 0) {
             $result = true;
         }
 
@@ -120,7 +120,7 @@ THESE GOT TO GO PROBABLY
 
         $query = $this->user_access->getUserByEmail($email);
             
-        if(count($query) > 0) {
+        if(count($query->result_array()) > 0) {
             $result = true;
         }
 
@@ -131,7 +131,7 @@ THESE GOT TO GO PROBABLY
         if(!$this->requireParams(['userName' => 'str', 'password' => 'str'])) return;
         $params = $this->getParams();
 
-        $query = $this->db->get_where('Users', ['User_name' => $params['userName']]);
+        $query = $this->user_access->getUserByName($params['userName']);
         if(count($query->result_array()) > 0) {
             $user = $query->row_array();
 

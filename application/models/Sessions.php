@@ -5,43 +5,29 @@ class Sessions extends CI_Model {
     public function __construct() {
         parent::__construct();
         $this->load->database();
-    }
-
-    public function generateId() {
-        $bytes = openssl_random_pseudo_bytes(20, $cstrong);
-        return bin2hex($bytes);
+        $this->load->model('sessions_access_object', 'sessions_access');
+        $this->load->model('user_access_object', 'user_access');
     }
 
     public function createSession($userId) {
-        $sessionId = $this->generateId();
-        $query = $this->db->query(' SELECT *
-                                    FROM Sessions 
-                                    WHERE Session_id="' . $sessionId . '"');
+        $sessionId = $this->sessions_access->generateId();
+        $query = $this->sessions_access->getBySession($sessionId);
 
         while(count($query->result_array()) > 0) {
-            $sessionId = $this->generateId();
-            $query = $this->db->query(' SELECT *
-                                        FROM Sessions 
-                                        WHERE Session_id="' . $sessionId . '"');
+            $sessionId = $this->sessions_access->generateId();
+            $query = $this->sessions_access->getBySession($sessionId);
         }
         
         if(!is_numeric($userId)) return false;
-        $data = [
-                'Session_id'     => $sessionId,
-                'User_id'        => $userId
-            ];
 
-        $userQuery = $this->db->query(' SELECT *
-                                        FROM Sessions 
-                                        WHERE User_id="' . $userId . '"');
+        $userQuery = $this->sessions_access->getByUser($userId);
 
         if(count($userQuery->result_array()) > 0) {
-            $this->db->where(['Session_id' => $userQuery->row_array()['Session_id']]);
-            if(!$this->db->update('Sessions', ['Session_id' => $sessionId])) {
+            if(!$this->sessions_access->updateSession($userQuery->row_array()['Session_id'], $sessionId)) {
                 return false;
             }
         } else {
-            if(!$this->db->insert('Sessions', $data)) {
+            if(!$this->sessions_access->insertSession($sessionId, $userId)) {
                 return false;
             }
         }
@@ -50,10 +36,10 @@ class Sessions extends CI_Model {
     }
 
     public function getUser($sessionId) {
-        $query = $this->db->get_where('Sessions', ['Session_id' => $sessionId]);
+        $query = $this->sessions_access->getBySession($sessionId);
         if(count($query->result_array()) > 0) {
             //A valid session exists
-            $userQuery = $this->db->get_where('Users', ['User_id' => $query->row_array()['User_id']]);
+            $userQuery = $this->user_access->getUserById($query->row_array()['User_id']);
             if(count($userQuery->result_array()) > 0) {
                 return $userQuery->row_array();
             } else {
