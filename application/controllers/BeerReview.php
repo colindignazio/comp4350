@@ -22,7 +22,44 @@ class BeerReview extends MY_Controller {
         }
     }
 
+    public function searchByBeer(){
+        if(!$this->requireParams(['beer_id'  => 'str'])) return;
+        $params = $this->getParams();
+        $id = $params['beer_id'];
+        $query = $this->Beer_review_model->searchByBeer($id);
 
+        if(count($query->result_array())==0){
+            $this->sendResponse(200, ['details' => 'No matching review for beer_id: '.$id]);
+        } else {
+            $this->sendResponse(200, ['results' => $query->result_array()]);
+        }
+    }
+
+    public function searchByUser(){
+        if(!$this->requireParams(['user_id'  => 'str'])) return;
+        $params = $this->getParams();
+        $id = $params['user_id'];
+        $query = $this->Beer_review_model->searchByUser($id);
+
+        if(count($query->result_array())==0){
+            $this->sendResponse(200, ['details' => 'No matching review for user_id: '.$id]);
+        } else {
+            $this->sendResponse(200, ['results' => $query->result_array()]);
+        }
+    }
+
+    public function searchByStars(){
+        if(!$this->requireParams(['stars'  => 'str'])) return;
+        $params = $this->getParams();
+        $stars = $params['stars'];
+        $query = $this->Beer_review_model->searchByStars($stars);
+
+        if(count($query->result_array())==0){
+            $this->sendResponse(200, ['details' => 'No matching review for stars: '.$stars]);
+        } else {
+            $this->sendResponse(200, ['results' => $query->result_array()]);
+        }
+    }
 
     public function create()
     {
