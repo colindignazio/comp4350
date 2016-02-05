@@ -19,7 +19,12 @@ class Beer_test extends TestCase {
     }
 
     public function test_getSearchResults() {
+        $output = $this->obj->getSearchResults('Sto');
+        $this->assertEquals(0, count($output));
 
+        $output = $this->obj->getSearchResults('Ale');
+        $this->assertEquals(1, count($output));
+        $this->assertEquals('Grasshopper', $output['typeMatches'][0]['Name']);
     }
 
     public function test_getAllBeers() {

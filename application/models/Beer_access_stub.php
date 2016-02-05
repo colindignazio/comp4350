@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Beers_stub extends CI_Model
+class Beer_access_stub extends CI_Model
 {
     private $table = array(
         0 => array('Beer_id' => 1, 'Type' => "Ale", 'Name' => "Grasshopper", 'Alcohol_By_Volume' => '5', 'Brewery' => "Big Rock"),
