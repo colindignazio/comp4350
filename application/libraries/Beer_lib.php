@@ -19,7 +19,7 @@ class Beer_lib {
 
     public function getSearchResults($token) {
     	if(strlen($token) < 3) {
-
+    		return null;
         } 
         else {
             $responseArray = [];
