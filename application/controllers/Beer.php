@@ -18,7 +18,7 @@ class Beer extends MY_Controller {
             $this->sendResponse(400, ['details' => 'No matching beverage for ID: ' . $id]);    
         }
         else {
-            $this->sendResponse(200, ['results' => $beer]);
+            $this->sendResponse(200, ['details' => $beer]);
         }        
     }
 
