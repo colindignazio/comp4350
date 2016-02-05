@@ -26,7 +26,7 @@ class BeerReview extends MY_Controller {
         $token = $params['searchToken'];
 
         $result = $this->beerreview_lib->getSearchResults($token);
-        $this->sendResponse($result['status'], ['details' => $result['details']]);
+        $this->sendResponse($result['status'], $result['details']);
     }
 
     public function create()
