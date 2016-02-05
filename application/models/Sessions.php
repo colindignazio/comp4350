@@ -13,7 +13,7 @@ class Sessions extends CI_Model {
         $sessionId = $this->sessions_access->generateId();
         $query = $this->sessions_access->getBySession($sessionId);
 
-        while(count($query->result_array()) > 0) {
+        while(count($query) > 0) {
             $sessionId = $this->sessions_access->generateId();
             $query = $this->sessions_access->getBySession($sessionId);
         }
@@ -22,8 +22,9 @@ class Sessions extends CI_Model {
 
         $userQuery = $this->sessions_access->getByUser($userId);
 
-        if(count($userQuery->result_array()) > 0) {
-            if(!$this->sessions_access->updateSession($userQuery->row_array()['Session_id'], $sessionId)) {
+        if(count($userQuery) > 0) {
+            $userQuery = $this->sessions_access->getByUserRow($userId);
+            if(!$this->sessions_access->updateSession($userQuery['Session_id'], $sessionId)) {
                 return false;
             }
         } else {
@@ -37,11 +38,12 @@ class Sessions extends CI_Model {
 
     public function getUser($sessionId) {
         $query = $this->sessions_access->getBySession($sessionId);
-        if(count($query->result_array()) > 0) {
+        if(count($query) > 0) {
             //A valid session exists
-            $userQuery = $this->user_access->getUserById($query->row_array()['User_id']);
-            if(count($userQuery->result_array()) > 0) {
-                return $userQuery->row_array();
+            $query = $this->sessions_access->getBySessionRow($sessionId);
+            $userQuery = $this->user_access->getUserById($query['User_id']);
+            if(count($userQuery) > 0) {
+                return $this->user_access->getUserByIdRow($query['User_id']);
             } else {
                 return FALSE;
             }

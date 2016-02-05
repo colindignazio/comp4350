@@ -26,6 +26,9 @@ class User_access_object extends CI_Model {
     public function getUserById($userId) {
         return $this->db->where('User_id', $userId)->get('Users')->result_array();
     }
+    public function getUserByIdRow($userId) {
+        return $this->db->where('User_id', $userId)->get('Users')->row_array();
+    }
     public function createAccount($data){
         return $this->db->insert('Users', $data);
     }

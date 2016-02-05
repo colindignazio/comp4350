@@ -8,11 +8,19 @@ class Sessions_access_object extends CI_Model {
     }
 
     public function getBySession($sessionId) {
-        return $this->db->where('Session_id', $sessionId)->get('Sessions');
+        return $this->db->where('Session_id', $sessionId)->get('Sessions')->result_array();
+    }
+
+    public function getBySessionRow($sessionId) {
+        return $this->db->where('Session_id', $sessionId)->get('Sessions')->row_array();
     }
 
     public function getByUser($userId) {
-        return $this->db->where('User_id', $userId)->get('Sessions');
+        return $this->db->where('User_id', $userId)->get('Sessions')->result_array();
+    }
+
+    public function getByUserRow($userId) {
+        return $this->db->where('User_id', $userId)->get('Sessions')->row_array();
     }
 
     public function updateSession($oldSession, $newSession) {
