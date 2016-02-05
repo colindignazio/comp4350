@@ -40,12 +40,8 @@ class BeerReview_lib {
             $responseArray = array_merge($responseArray, ['starMatches' => $starMatches]);
         }
 
-        if(count($responseArray)==0){
-            return ['status' => 200, 'details' => 'No matching results'];
-        } 
-        else {
-            return ['status' => 200, 'details' => $responseArray];
-        }
+        return  $responseArray;
+
     }
 
     public function createBeerReview($beerId, $userId, $storeId, $stars, $review, $price) {
