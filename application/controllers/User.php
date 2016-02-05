@@ -6,6 +6,7 @@ class User extends MY_Controller {
         parent::__construct();
         $this->load->model('sessions');
         $this->load->model('user_access_object', 'user_access');
+        $this->load->library('user_lib');
     }
 
 /**************************************************
@@ -45,7 +46,7 @@ THESE GOT TO GO PROBABLY
         ])) return;
         $params = $this->getParams();
         
-        $userInfoError = $this->validateUserInfo($params['userName'], $params['password'], $params['email'], $params['location']);
+        $userInfoError = $this->user_lib->validateUserInfo($params['userName'], $params['password'], $params['email'], $params['location']);
 
         if(is_null($userInfoError)) {
             $emailCode = genVerificationCode();
@@ -76,60 +77,13 @@ THESE GOT TO GO PROBABLY
         }
     }
 
-    private function validateUserInfo($username, $password, $email, $location) {
-        $result = null;     
-
-        if(is_null($username) || $username == "") {
-            $result = 'Invalid username';
-        } 
-        else if($this->isUsernameInUse($username)) {
-            $result = 'Username already in use';
-        }
-        else if(is_null($email) || $email == "" || !isEmail($email)) {
-            $result = 'Invalid email address';
-        }
-        else if($this->isEmailInUse($email)) {
-            $result = 'Email already in use';
-        }
-        else if(is_null($password) || $password == "") {
-            $result = 'Invalid password';
-        }
-        else if(is_null($location) || $location == "") {
-            $result = 'Invalid location';
-        }
-
-        return $result;
-    }
-
-    private function isUsernameInUse($username) {
-        $result = false;
-
-        $query = $this->user_access->getUserByName($username)->result_array();
-        
-        if(count($query) > 0) {
-            $result = true;
-        }
-
-        return $result;
-    }
-
-    private function isEmailInUse($email) {
-        $result = false;
-
-        $query = $this->user_access->getUserByEmail($email)->result_array();
-            
-        if(count($query) > 0) {
-            $result = true;
-        }
-
-        return $result;
-    }
+    
 
     public function login() {
         if(!$this->requireParams(['userName' => 'str', 'password' => 'str'])) return;
         $params = $this->getParams();
 
-        $query = $this->user_access->login($params['userName']);
+        $query = $this->user_lib->login($params['userName']);
         if(count($query->result_array()) > 0) {
             $user = $query->row_array();
 
