@@ -6,6 +6,7 @@ class BeerReview extends MY_Controller {
         parent::__construct();
         //$this->load->model('sessions');
         $this->load->model('Beer_review_model');
+        $this->load->model('Beer_review_stub');
     }
 
 
@@ -77,7 +78,7 @@ class BeerReview extends MY_Controller {
 
     public function All() {
         $query = $this->Beer_review_model->All();
-        $this->sendResponse(200, ['results' => $query->result_array()]);
+        $this->sendResponse(200, ['results' => $query]);
     }
 
     //Used to overwrite the actual 'review' elements, ie stars and review
