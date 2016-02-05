@@ -4,7 +4,7 @@ class Beer_integration_test extends TestCase {
     public function setUp() {
         $this->resetInstance();
         $this->CI->load->library('Beer_lib');
-        $this->obj = $this->CI->user_lib;
+        $this->obj = $this->CI->beer_lib;
     }
 
     //Sample integration tests for the search user story.

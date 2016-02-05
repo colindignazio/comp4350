@@ -50,7 +50,7 @@ class Beer_review_stub extends CI_Model {
     }
 
     public function create($data){
-        return true
+        return true;
     }
 
     public function updateReview($data, $reviewId){

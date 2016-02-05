@@ -20,7 +20,7 @@ class User_access_object extends CI_Model {
     }
 
     public function removeUser($userId) {
-        return $this->db->where('User_id', $userId)->delete('Users')->result_array();
+        return $this->db->where('User_id', $userId)->delete('Users');
     }
 
     public function getUserById($userId) {
