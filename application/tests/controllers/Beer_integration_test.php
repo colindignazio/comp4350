@@ -7,24 +7,16 @@ class Beer_integration_test extends TestCase {
         $this->obj = $this->CI->user_lib;
     }
 
-    //Sample integration tests for the create account user story.
-    public function test_getBeerById() {
-        $output = $this->obj->getBeerById(1);
-        $this->assertEquals('Ale', $output[0]['Type']);
-        $this->assertEquals('Ale', $output[0]['Type']);
-        $this->assertEquals('Grasshopper', $output[0]['Name']);
-        $this->assertEquals('5', $output[0]['Alcohol_By_Volume']);
-        $this->assertEquals('Big Rock', $output[0]['Brewery']);
-    }
-
+    //Sample integration tests for the search user story.
     public function test_getSearchResults() {
         $output = $this->obj->getSearchResults('Ale');
-        $this->assertEquals(1, count($output));
         $this->assertEquals('Grasshopper', $output['typeMatches'][0]['Name']);
-    }
+        $this->assertEquals('5', $output['typeMatches'][0]['Alcohol_By_Volume']);
+        $this->assertEquals('Big Rock', $output['typeMatches'][0]['Brewery']);
 
-    public function test_getAllBeers() {
-        $output = $this->obj->getAllBeers();
-        $this->assertEquals(3, count($output));
+        $output = $this->obj->getSearchResults('Grasshopper');
+        $this->assertEquals('Grasshopper', $output['nameMatches'][0]['Name']);
+        $this->assertEquals('5', $output['nameMatches'][0]['Alcohol_By_Volume']);
+        $this->assertEquals('Big Rock', $output['nameMatches'][0]['Brewery']);
     }
 }
