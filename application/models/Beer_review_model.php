@@ -22,15 +22,18 @@ class Beer_review_model extends CI_Model {
     }
 
     public function searchByBeer($id){
-        return $this->db->where('beer_id', $id)->get('Beer_reviews');
+       $query = $this->db->where('beer_id', $id)->get('Beer_reviews');
+        return $query->result_array();
     }
 
     public function searchByUser($id){
-        return $this->db->where('user_id', $id)->get('Beer_reviews');
+        $query = $this->db->where('user_id', $id)->get('Beer_reviews');
+        return $query->result_array();
     }
 
     public function searchByStars($id){
-        return $this->db->where('stars', $id)->get('Beer_reviews');
+        $query = $this->db->where('stars', $id)->get('Beer_reviews');
+        return $query->result_array();
     }
 
     public function All(){
