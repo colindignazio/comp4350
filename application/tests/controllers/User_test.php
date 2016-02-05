@@ -46,7 +46,7 @@ class User_test extends TestCase {
 
     public function test_SetUsername() {
         //Calls that shouldn't allow user access
-        $output = $this->obj->setUsername('0', 'Chuffy2');
+        $output = $this->obj->setUsername('453', 'Chuffy2');
         $this->assertEquals('401', $output['status']);
 
 
@@ -63,7 +63,7 @@ class User_test extends TestCase {
 
     public function test_SetPassword() {
         //Calls that shouldn't allow user access
-        $output = $this->obj->setPassword('0', 'testpass', 'testpass2');
+        $output = $this->obj->setPassword('453', 'testpass', 'testpass2');
         $this->assertEquals('401', $output['status']);
 
 
@@ -80,7 +80,7 @@ class User_test extends TestCase {
 
     public function test_SetLocation() {
         //Calls that shouldn't allow user access
-        $output = $this->obj->setLocation('0', 'The Moon');
+        $output = $this->obj->setLocation('453', 'The Moon');
         $this->assertEquals('401', $output['status']);
 
 
