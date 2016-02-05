@@ -26,15 +26,7 @@ class BeerReview extends MY_Controller {
         $token = $params['searchToken'];
 
         $result = $this->beerreview_lib->getSearchResults($token);
-
-        if($result === null) {
-            $this->sendResponse(400, ['details' => 'Search token too short']);
-        }
-        elseif(count($result) == 0) {
-            $this->sendResponse(200, ['details' => 'No matching results']);
-        } else {
-            $this->sendResponse(200, $result);
-        }
+        $this->sendResponse($result['status'], $result['details']);
     }
 
     public function create()
