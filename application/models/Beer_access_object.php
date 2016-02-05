@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Beers extends CI_Model {
+class Beer_access_object extends CI_Model {
     public function __construct() {
         parent::__construct();
     }
@@ -36,5 +36,3 @@ class Beers extends CI_Model {
     }
 
 }
-
-?>
