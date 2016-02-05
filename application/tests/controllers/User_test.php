@@ -64,7 +64,7 @@ class User_test extends TestCase {
         $this->assertContains('Unauthorized', $output);
 
         //Call to login and get a sessionId
-        $sessionId = $this->login()['sessionId'];
+        $sessionId = $this->request('POST', 'user/login', ['userName' => 'Chuffy', 'password' => 'testpass']);
         $this->assertNotEquals($output, null);
         //Valid setUsername call
         $output = $this->request('POST', 'user/setUsername', ['sessionId' => $sessionId, 'userName' => 'Chuffy2']);
@@ -86,7 +86,7 @@ class User_test extends TestCase {
         $this->assertContains('Unauthorized', $output);
 
         //Call to login and get a sessionId
-        $sessionId = $this->login()['sessionId'];
+        $sessionId = $this->request('POST', 'user/login', ['userName' => 'Chuffy', 'password' => 'testpass']);
         $this->assertNotEquals($output, null);
         //Valid setUsername call
         $output = $this->request('POST', 'user/setPassword', ['sessionId' => $sessionId, 'oldPass' => 'testpass', 'newPass' => 'testpass2']);
@@ -108,7 +108,7 @@ class User_test extends TestCase {
         $this->assertContains('Unauthorized', $output);
 
         //Call to login and get a sessionId
-        $sessionId = $this->login()['sessionId'];
+        $sessionId = $this->request('POST', 'user/login', ['userName' => 'Chuffy', 'password' => 'testpass']);;
         $this->assertNotEquals($output, null);
         //Valid setUsername call
         $output = $this->request('POST', 'user/setLocation', ['sessionId' => $sessionId, 'location' => 'The Moon']);
@@ -116,9 +116,5 @@ class User_test extends TestCase {
         //"Rollback test"
         $output = $this->request('POST', 'user/setLocation', ['sessionId' => $sessionId, 'location' => 'Winnipeg']);
         $this->assertContains('OK', $output);
-    }
-
-    public function login() {
-        return $this->request('POST', 'user/login', ['userName' => 'Chuffy', 'password' => 'testpass']);
     }
 }
