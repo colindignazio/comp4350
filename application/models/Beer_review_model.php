@@ -35,7 +35,7 @@ class Beer_review_model extends CI_Model {
 
     public function All(){
         $query = $this->db->get('Beer_reviews');
-        return $query;
+        return $query->result_array();
     }
 
     public function create($data){

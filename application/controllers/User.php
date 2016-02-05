@@ -22,8 +22,7 @@ THESE GOT TO GO PROBABLY
     }
 
     public function testDatabase() {
-        $query = $this->db->where('testId', "1")
-                          ->get('test');
+        $query = $this->user_access->testDatabase();
         $this->sendResponse(200, ['results' => $query->result_array()]);
     }
 
@@ -59,14 +58,13 @@ THESE GOT TO GO PROBABLY
             ];
 
             // Insert and check for unique key error
-            $this->load->database();
-            if(!$this->db->insert('Users', $data)) {
+            if(!$this->user_access->createAccount($data)) {
                 $this->sendResponse(500, ['details' => 'An unknown error occurred']);
             }
             else {
                 $this->load->library('emailer');
                 $this->emailer->sendVerificationCode($params['email'], $emailCode);
-                $userId = $this->db->insert_id();
+                $userId = $this->access_user->insert_id();
                 $sessionId = $this->sessions->createSession($userId);
                 unset($data['User_password']);
                 unset($data['User_email_code']);
@@ -108,7 +106,7 @@ THESE GOT TO GO PROBABLY
 
         $query = $this->user_access->getUserByName($username);
         
-        if(count($query->result_array()) > 0) {
+        if(count($query) > 0) {
             $result = true;
         }
 
@@ -120,7 +118,7 @@ THESE GOT TO GO PROBABLY
 
         $query = $this->user_access->getUserByEmail($email);
             
-        if(count($query->result_array()) > 0) {
+        if(count($query) > 0) {
             $result = true;
         }
 
@@ -131,7 +129,7 @@ THESE GOT TO GO PROBABLY
         if(!$this->requireParams(['userName' => 'str', 'password' => 'str'])) return;
         $params = $this->getParams();
 
-        $query = $this->user_access->getUserByName($params['userName']);
+        $query = $this->user_access->login($params['userName']);
         if(count($query->result_array()) > 0) {
             $user = $query->row_array();
 
@@ -150,8 +148,7 @@ THESE GOT TO GO PROBABLY
     public function logout() {
         if(!$this->requireParams(['sessionId' => 'str'])) return;
         $params = $this->getParams();
-        $this->db->where(['Session_id' => $params['sessionId']]);
-        if(!$this->db->delete('Sessions')) {
+        if(! $this->user_access->logout($params['sessionId'])) {
             $this->sendResponse(400, ['details' => 'Error logging out']);
         } else {
             $this->sendResponse(200);
@@ -165,9 +162,9 @@ THESE GOT TO GO PROBABLY
         $data = ['User_name'    => $params['userName']];
 
         if(FALSE !== $user = $this->sessions->getUser($params['sessionId'])) {
-            $this->db->where(['User_id' => $user['User_id']]);
-            if(!$this->db->update('Users', $data)) {
-                $error = $this->db->error();
+
+            if(!$this->user_access->update($user['User_id'], $data)) {
+                $error = $this->user_access->lastError();
 
                 if(1062 == $error['code']) {
                     $this->sendResponse(400, ['details' => 'Username address in use']);
@@ -194,8 +191,7 @@ THESE GOT TO GO PROBABLY
             $data = ['User_password'    => password_hash($params['newPass'], PASSWORD_DEFAULT)];
 
             if(password_verify($params['oldPass'], $user['User_password'])) {
-                $this->db->where(['User_id' => $user['User_id']]);
-                if(!$this->db->update('Users', $data)) {
+                if(!$this->user_access->update($user['User_id'], $data)) {
                     $this->sendResponse(500, ['details' => 'An unknown error occurred']);
                 } else {
                     $this->sendResponse(200);
@@ -216,8 +212,7 @@ THESE GOT TO GO PROBABLY
 
         if(FALSE !== $user = $this->sessions->getUser($params['sessionId'])) {
             $data = ['User_location'    => $params['location']];
-            $this->db->where(['User_id' => $user['User_id']]);
-            if(!$this->db->update('Users', $data)) {
+            if(!$this->user_access->update($user['User_id'], $data)) {
                 $this->sendResponse(500, ['details' => 'An unknown error occurred']);
             } else {
                 $this->sendResponse(200);
@@ -227,3 +222,4 @@ THESE GOT TO GO PROBABLY
         }
     }
 }
+

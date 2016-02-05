@@ -18,4 +18,26 @@ class User_access_object extends CI_Model {
     public function getUserById($userId) {
         return $this->db->where('User_id', $userId)->get('Users');
     }
+    public function createAccount($data){
+        return $this->db->insert('Users', $data);
+    }
+    public function login($userName){
+        return $query =  $this->db->get_where('Users', ['User_name' => $userName]);
+    }
+    public function logout($sessionId){
+        return $this->db->where(['Session_id' => $sessionId])->delete('Sessions');
+    }
+    public function insert_id(){
+       return $this->db->insert_id();
+    }
+    public function lastError(){
+        return $this->db->error();
+    }
+    public function update($userId, $data){
+        $this->db->where(['User_id' => $userId]);
+        return $this->db->update('Users', $data);
+    }
+    public function testDatabase(){
+        return $this->db->where('testId', "1")->get('test');
+    }
 }
