@@ -87,6 +87,22 @@ class User_lib {
         return $result;
     }
 
+    public function getUser($sessionId) {
+        $query = $this->CI->user_access->getUserBySession($sessionId);
+        if(count($query) > 0) {
+            $user = $this->CI->user_access->getUserBySessionRow($sessionId);
+
+            unset($user['User_password']);
+            unset($user['Session_id']);
+            $result['status'] = 200;
+            $result['user'] = $user;
+        } else {
+            $result['status'] = 400;
+            $result['details'] = 'Invalid username or password';
+        }
+        return $result;
+    }
+
     public function logout($sessionId) {
         if(! $this->CI->user_access->logout($sessionId)) {
             $result = ['status' => 400, 'details' => 'Error logging out'];

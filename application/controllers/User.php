@@ -31,6 +31,17 @@ class User extends MY_Controller {
         }
     }
 
+    public function getUserDetails() {
+        if(!$this->requireParams(['sessionId' => 'str'])) return;
+        $params = $this->getParams();
+        $result = $this->user_lib->getUser($params['sessionId']);
+        if($result['status'] == 200) {
+            $this->sendResponse(200, ['user' => $result['user']]);
+        } else {
+            $this->sendResponse($result['status'], ['details' => $result['details']]);
+        }
+    }
+
     public function logout() {
         if(!$this->requireParams(['sessionId' => 'str'])) return;
         $params = $this->getParams();

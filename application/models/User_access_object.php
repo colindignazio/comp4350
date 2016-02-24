@@ -11,6 +11,14 @@ class User_access_object extends CI_Model {
     	return $this->db->where('User_name', $username)->get('Users')->result_array();
     }
 
+    public function getUserBySession($sessionId) {
+        return $this->db->query('SELECT * FROM Sessions JOIN Users ON Sessions.User_id = Users.User_id')->result_array();
+    }
+
+    public function getUserBySessionRow($sessionId) {
+        return $this->db->query('SELECT * FROM Sessions JOIN Users ON Sessions.User_id = Users.User_id')->row_array();
+    }
+
     public function getUserByNameRow($username) {
         return $this->db->where('User_name', $username)->get('Users')->row_array();
     }
