@@ -103,6 +103,22 @@ class User_lib {
         return $result;
     }
 
+    public function getUserById($userId) {
+        $query = $this->CI->user_access->getUserById($userId);
+        if(count($query) > 0) {
+            $user = $this->CI->user_access->getUserByIdRow($userId);
+
+            unset($user['User_password']);
+            unset($user['Session_id']);
+            $result['status'] = 200;
+            $result['user'] = $user;
+        } else {
+            $result['status'] = 400;
+            $result['details'] = 'No user found';
+        }
+        return $result;
+    }
+
     public function logout($sessionId) {
         if(! $this->CI->user_access->logout($sessionId)) {
             $result = ['status' => 400, 'details' => 'Error logging out'];
