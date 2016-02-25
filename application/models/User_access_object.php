@@ -23,6 +23,27 @@ class User_access_object extends CI_Model {
                                  WHERE Session_id="' . $sessionId . '"')->row_array();
     }
 
+    public function searchByName($name){
+        $query = $this->db->select('User_name, User_location, User_email, User_id')
+                          ->like('User_name', $name)
+                          ->get('Users');
+        return $query->result_array();
+    }
+
+    public function searchByLocation($location){
+        $query = $this->db->select('User_name, User_location, User_email, User_id')
+                          ->like('User_location', $location)
+                          ->get('Users');
+        return $query->result_array();
+    }
+
+    public function searchByEmail($email){
+        $query = $this->db->select('User_name, User_location, User_email, User_id')
+                          ->like('User_email', $email)
+                          ->get('Users');
+        return $query->result_array();
+    }
+
     public function getUserByNameRow($username) {
         return $this->db->where('User_name', $username)->get('Users')->row_array();
     }

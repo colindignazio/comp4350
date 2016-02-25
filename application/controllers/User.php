@@ -64,6 +64,23 @@ class User extends MY_Controller {
         }
     }
 
+    public function search() {
+        if(!$this->requireParams(['searchToken'  => 'str'])) return;
+        $params = $this->getParams();
+        $token = $params['searchToken'];
+
+        $results = $this->user_lib->getSearchResults($token);
+
+        if($results === null) {
+            $this->sendResponse(400, ['details' => 'Search token too short']);
+        } 
+        elseif(count($results) == 0) {
+            $this->sendResponse(400, ['details' => 'No matching results']);    
+        } else {
+            $this->sendResponse(200, ['searchResults' => $results]);  
+        }
+    }
+
     public function setUsername() {
         if(!$this->requireParams(['sessionId' => 'str', 'userName' => 'str'])) return;
         $params = $this->getParams();

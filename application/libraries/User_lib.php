@@ -128,6 +128,42 @@ class User_lib {
         return $result;
     }
 
+    public function getSearchResults($token) {
+        if(strlen($token) < 3) {
+            return null;
+        } 
+        else {
+            $responseArray = [];
+            $nameMatches = $this->CI->user_access->searchByName($token);
+            $locationMatches = $this->CI->user_access->searchByLocation($token);
+            $emailMatches = $this->CI->user_access->searchByEmail($token);
+            
+            if (count($nameMatches)>0){
+                $responseArray = array_merge($responseArray, $nameMatches);
+            }
+            if (count($locationMatches)>0){
+                $responseArray = array_merge($responseArray, $locationMatches);
+            }
+            if (count($emailMatches)>0){
+                $responseArray = array_merge($responseArray, $emailMatches);
+            }
+
+            $temp_array = array(); 
+            $i = 0; 
+            $key_array = array(); 
+            $key='User_name';
+            
+            foreach($responseArray as $val) { 
+                if (!in_array($val[$key], $key_array)) { 
+                    $key_array[$i] = $val[$key]; 
+                    $temp_array[$i] = $val; 
+                } 
+                $i++; 
+            } 
+            return $temp_array; 
+        }
+    }
+
     public function setUsername($sessionId, $userName) {
         $data = ['User_name'    => $userName];
 
