@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Follow_lib {
-	public function __construct($dbaccess = array(0 => 'Follow_access_stub')) {
+	public function __construct($dbaccess = array(0 => 'Follow_access_object')) {
 		$this->CI =& get_instance();
         $this->CI->load->model($dbaccess[0], 'follow_access');
     }
@@ -36,7 +36,7 @@ class Follow_lib {
 
     public function followUser($followerId, $followeeId) {
     	$success = $this->CI->follow_access->followUser($followerId, $followeeId);    
-
+        
         if($success) {
             $result = ['status' => 200, 'details' => 'User followed'];            
         }

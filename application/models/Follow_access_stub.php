@@ -37,7 +37,7 @@ class Follow_access_stub extends CI_Model {
         $this->userTable = $this->generateStubTable();  
     }
 
-    public function getFolloweeIds($userId) {
+    private function getFolloweeIds($userId) {
         $arr = $this->followTable;
         $followees = array();
 

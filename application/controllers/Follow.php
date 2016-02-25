@@ -38,4 +38,12 @@ class Follow extends MY_Controller {
 
         $this->sendResponse($result['status'], ['details' => $result['details']]);
     }
+
+    public function getTotalFollows() {
+        if(!$this->requireParams(['userId'  => 'str'])) return;
+        $params = $this->getParams();
+        $result = $this->follow_lib->getFolloweeCount($params['userId']);
+
+        $this->sendResponse($result['status'], ['details' => $result['details']]);
+    }
 }
