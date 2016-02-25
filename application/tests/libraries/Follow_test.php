@@ -16,9 +16,9 @@ class Follow_test extends TestCase {
     public function test_getFolloweeNames() {
     	$names = $this->obj->getFolloweeNames(1);
 
-    	$this->assertEquals("testuser123", $names[0]['User_name']);
-    	$this->assertEquals("Chuffy", $names[1]['User_name']);
-    	$this->assertEquals("Mitchell", $names[2]['User_name']);
+    	$this->assertEquals("testuser123", $names[0]);
+    	$this->assertEquals("Chuffy", $names[1]);
+    	$this->assertEquals("Mitchell", $names[2]);
 
     	$names = $this->obj->getFolloweeNames(0);
     	$this->assertEquals(0, count($names));
@@ -30,5 +30,10 @@ class Follow_test extends TestCase {
 
     public function test_unfollowUser() {
     	$this->assertTrue($this->obj->unfollowUser(1, 2));   	  	
+    }
+
+    public function test_getRecentFollowweeReviews() {
+    	$this->AssertEquals("Decent", $this->obj->getRecentFolloweeReviews(1)[0]);
+    	$this->AssertEquals(0, count($this->obj->getRecentFolloweeReviews(0)));
     }
 }

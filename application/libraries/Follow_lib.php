@@ -15,7 +15,7 @@ class Follow_lib {
     	return $this->CI->follow_access->getFolloweeNames($userId);
     }
 
-    public function getRecentFollowweeReviews($userId) {
+    public function getRecentFolloweeReviews($userId) {
     	return $this->CI->follow_access->getRecentFolloweeReviews($userId);
     }
 

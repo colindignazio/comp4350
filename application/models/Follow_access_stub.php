@@ -8,6 +8,15 @@ class Follow_access_stub extends CI_Model {
         2 => array('Follow_id' => 3, 'Follower_id' => "1", 'Followee_id' => 2),
     );
 
+    private $reviewTable = array(
+        0 => array('id'=>1, 'beer_id'=>'9', 'user_id'=>'1', 'store_id'=>'1',
+            'stars'=>'2', 'review'=>"Nothing Special", 'price'=>'2.14'),
+        1 => array('id'=>2, 'beer_id'=>'11', 'user_id'=>'3', 'store_id'=>'1',
+            'stars'=>'5', 'review'=>"Decent", 'price'=>'2.21'),
+        2 => array('id'=>3, 'beer_id'=>'9', 'user_id'=>'4', 'store_id'=>'1',
+            'stars'=>'1', 'review'=>"Tastes like chicken", 'price'=>'5.33'),
+    );
+
     private $userTable;
 
     private function generateStubTable() {
@@ -54,7 +63,7 @@ class Follow_access_stub extends CI_Model {
         $names = array();
 
         foreach($followees as $followee) {
-            array_push($names, $this->getUser($followee));
+            array_push($names, $this->getUser($followee)['User_name']);
         }
 
         return $names;
@@ -68,7 +77,30 @@ class Follow_access_stub extends CI_Model {
         return true;      
     }
 
-    public function getRecentFolloweeReviews($userId) {
+    private function getReviews($userId) {
+        $reviews = array();
 
+        foreach($this->reviewTable as $review) {
+            if($review['user_id'] == $userId) {
+                array_push($reviews, $review['review']);
+            }
+        }
+
+        return $reviews;
+    }
+
+    public function getRecentFolloweeReviews($userId) {
+        $followees = $this->getFolloweeIds($userId);
+        $reviews = array();
+
+        foreach($followees as $followee) {
+            $reviewsForFollowee = $this->getReviews($followee);
+            
+            foreach($reviewsForFollowee as $review) {
+                array_push($reviews, $review);                
+            }
+        }
+
+        return $reviews;
     }
 }
