@@ -34,5 +34,12 @@ class Beer_access_object extends CI_Model {
     					  ->get('Beers');
     	return $query->result_array();
     }
+	public function getTop(){
+		$sql = "select * from Beers ORDER BY Beer_id DESC LIMIT 10"; //This has to be changed once the actual rating is
+		//implemented into the database, ID search is just a temp thing
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
 
 }
