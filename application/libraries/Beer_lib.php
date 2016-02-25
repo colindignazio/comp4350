@@ -28,16 +28,28 @@ class Beer_lib {
             $typeMatches = $this->CI->beer_access->getByType($token);
             
             if (count($nameMatches)>0){
-                $responseArray = array_merge($responseArray, ['nameMatches' => $nameMatches]);
+                $responseArray = array_merge($responseArray, $nameMatches);
             }
             if (count($breweryMatches)>0){
-                $responseArray = array_merge($responseArray, ['breweryMatches' => $breweryMatches]);
+                $responseArray = array_merge($responseArray, $breweryMatches);
             }
             if (count($typeMatches)>0){
-                $responseArray = array_merge($responseArray, ['typeMatches' => $typeMatches]);
+                $responseArray = array_merge($responseArray, $typeMatches);
             }
 
-            return $responseArray;
+            $temp_array = array(); 
+            $i = 0; 
+            $key_array = array(); 
+            $key='Beer_id';
+            
+            foreach($responseArray as $val) { 
+                if (!in_array($val[$key], $key_array)) { 
+                    $key_array[$i] = $val[$key]; 
+                    $temp_array[$i] = $val; 
+                } 
+                $i++; 
+            } 
+            return $temp_array;
         }
     }
 

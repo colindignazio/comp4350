@@ -35,7 +35,7 @@ class Beer extends MY_Controller {
         elseif(count($results) == 0) {
             $this->sendResponse(200, ['details' => 'No matching results']);    
         } else {
-            $this->sendResponse(200, $results);  
+            $this->sendResponse(200, ['searchResults' => $results]);  
         }
     }
 
