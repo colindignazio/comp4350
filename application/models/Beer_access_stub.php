@@ -15,6 +15,9 @@ class Beer_access_stub extends CI_Model
     public function getAll(){
         return $this->table;
     }
+    public function getTop(){
+        return $this->table[0];
+    }
     public function getById($id){
         foreach($this->table as $entry) {
             if ($entry['Beer_id'] == $id) {

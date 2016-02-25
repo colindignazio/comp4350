@@ -56,4 +56,7 @@ class Beer_lib {
     public function getAllBeers() {
     	return $this->CI->beer_access->getAll();
     }
+    public function getTopDrinks() {
+        return $this->CI->beer_access->getTop();
+    }
 }
