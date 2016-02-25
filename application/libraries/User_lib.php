@@ -98,7 +98,7 @@ class User_lib {
             $result['user'] = $user;
         } else {
             $result['status'] = 400;
-            $result['details'] = 'Invalid username or password';
+            $result['details'] = 'Invalid user';
         }
         return $result;
     }

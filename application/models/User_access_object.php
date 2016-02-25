@@ -36,10 +36,15 @@ class User_access_object extends CI_Model {
     }
 
     public function getUserById($userId) {
-        return $this->db->where('User_id', $userId)->get('Users')->result_array();
+        $user = $this->db->where('User_id', $userId)->get('Users')->result_array();
+        return $user;
     }
     public function getUserByIdRow($userId) {
-        return $this->db->where('User_id', $userId)->get('Users')->row_array();
+        $user = $this->db->where('User_id', $userId)->get('Users')->row_array();
+        $user['reviews'] = $this->db->query('SELECT * FROM Beer_reviews
+                                             JOIN Beers ON Beer_reviews.beer_id=Beers.Beer_id
+                                             WHERE user_id=' . $userId . ';')->result_array();
+        return $user;
     }
     public function createAccount($data){
         return $this->db->insert('Users', $data);
