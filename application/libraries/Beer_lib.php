@@ -52,6 +52,16 @@ class Beer_lib {
             return $temp_array;
         }
     }
+    public function updateRating($reviews, $beer_id){
+        $i = 0;
+        $totalScore = 0;
+        foreach($reviews as $val){
+            $totalScore += $val['stars'];
+            $i++;
+        }
+        $newRating = $totalScore/$i;
+        return $this->CI->beer_access->updateRating($newRating, $beer_id);
+    }
 
     public function getAllBeers() {
     	return $this->CI->beer_access->getAll();
