@@ -15,8 +15,12 @@ class BeerReview_lib {
         } else {
             $result = ['status' => 200, 'details' => $query];
         }
-
         return $result;
+    }
+
+    public function getSpecificBeerReviews($id){
+        $query = $this->CI->beer_review_access->getSpecificBeerReviews($id);
+        return $query;
     }
 
     public function getSearchResults($token) {
@@ -75,6 +79,8 @@ class BeerReview_lib {
         else {
             return ['status' => 200, 'details' => $data];
         }
+
+
     }
 
     public function getAllReviews() {

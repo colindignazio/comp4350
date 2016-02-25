@@ -38,7 +38,6 @@ class Beer extends MY_Controller {
             $this->sendResponse(200, ['searchResults' => $results]);  
         }
     }
-
     public function getAllBeers() {
         $this->sendResponse(200, ['results' => $this->beer_lib->getAllBeers()]);
     }
