@@ -58,17 +58,6 @@ class Follow_access_stub extends CI_Model {
         return $this->userTable[$userId];
     }
 
-    public function getFolloweeNames($userId) {
-        $followees = $this->getFolloweeIds($userId);
-        $names = array();
-
-        foreach($followees as $followee) {
-            array_push($names, $this->getUser($followee)['User_name']);
-        }
-
-        return $names;
-    }
-
     public function followUser($followerId, $followeeId) {
         return true;     
     }

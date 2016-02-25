@@ -16,10 +16,6 @@ class Follow_access_object extends CI_Model {
         return count($query->result_array());
     }
 
-    public function getFolloweeNames($userId) {
-        return null;
-    }
-
     public function followUser($followerId, $followeeId) {
         return $this->db->insert('Follows', ['Follower_id' => $followerId, 'Followee_id' => $followeeId]);
     }
@@ -31,18 +27,14 @@ class Follow_access_object extends CI_Model {
     }
 
     public function getRecentFolloweeReviews($userId) {
-        $followees = $this->getFolloweeIds($userId);
-        $reviews = array();
+    	$this->db->select('*');
+    	$this->db->from('Follows');
+    	$this->db->join('Beer_reviews', 'Beer_reviews.user_id=Follows.Followee_id');
+    	$this->db->join('Users', 'Users.User_id=Follows.Followee_id');
+    	$this->db->where('Follows.Follower_id', $userId);
+    	$query = $this->db->get();
 
-        foreach($followees as $followee) {
-            $reviewsForFollowee = $this->getReviews($followee);
-            
-            foreach($reviewsForFollowee as $review) {
-                array_push($reviews, $review);                
-            }
-        }
-
-        return $reviews;
+        return $query->result_array();
     }
 
     public function isUserFollowed($followerId, $followeeId) {

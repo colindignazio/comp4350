@@ -34,7 +34,7 @@ class Follow extends MY_Controller {
     public function getRecentReviews() {
         if(!$this->requireParams(['userId'  => 'str'])) return;
         $params = $this->getParams();
-        $result = $this->follow_lib->getRecentFolloweeReviews($params['followerId']);
+        $result = $this->follow_lib->getRecentFolloweeReviews($params['userId']);
 
         $this->sendResponse($result['status'], ['details' => $result['details']]);
     }

@@ -20,13 +20,6 @@ class Follow_lib {
         return $result;
     }
 
-    public function getFolloweeNames($userId) {
-    	$names = $this->CI->follow_access->getFolloweeNames($userId);
-        $result = ['status' => 200, 'details' => $names];  
-
-        return $result;
-    }
-
     public function getRecentFolloweeReviews($userId) {
     	$reviews = $this->CI->follow_access->getRecentFolloweeReviews($userId);
         $result = ['status' => 200, 'details' => $reviews];  
@@ -36,7 +29,7 @@ class Follow_lib {
 
     public function followUser($followerId, $followeeId) {
     	$success = $this->CI->follow_access->followUser($followerId, $followeeId);    
-        
+
         if($success) {
             $result = ['status' => 200, 'details' => 'User followed'];            
         }
