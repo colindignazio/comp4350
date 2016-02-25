@@ -37,7 +37,7 @@ class Follow_access_stub extends CI_Model {
         $this->userTable = $this->generateStubTable();  
     }
 
-    public function getFolloweeIds($userId) {
+    private function getFolloweeIds($userId) {
         $arr = $this->followTable;
         $followees = array();
 
@@ -82,7 +82,7 @@ class Follow_access_stub extends CI_Model {
 
         foreach($this->reviewTable as $review) {
             if($review['user_id'] == $userId) {
-                array_push($reviews, $review['review']);
+                array_push($reviews, $review);
             }
         }
 
@@ -102,5 +102,15 @@ class Follow_access_stub extends CI_Model {
         }
 
         return $reviews;
+    }
+
+    public function isUserFollowed($followerId, $followeeId) {
+        $followees = $this->getFolloweeIds($followerId);
+
+        if(in_array($followeeId, $followees)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
