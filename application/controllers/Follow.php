@@ -8,25 +8,25 @@ class Follow extends MY_Controller {
     }
 
     public function followUser() {
-        if(!$this->requireParams(['followerId'  => 'str', 'followeeId'   => 'str'])) return;
+        if(!$this->requireParams(['sessionId'  => 'str', 'followeeId'   => 'str'])) return;
         $params = $this->getParams();
-        $result = $this->follow_lib->followUser($params['followerId'], $params['followeeId']);
+        $result = $this->follow_lib->followUser($params['sessionId'], $params['followeeId']);
 
         $this->sendResponse($result['status'], ['details' => $result['details']]);
     }
 
     public function unfollowUser() {
-        if(!$this->requireParams(['followerId'  => 'str', 'followeeId'   => 'str'])) return;
+        if(!$this->requireParams(['sessionId'  => 'str', 'followeeId'   => 'str'])) return;
         $params = $this->getParams();
-        $result = $this->follow_lib->unfollowUser($params['followerId'], $params['followeeId']);
+        $result = $this->follow_lib->unfollowUser($params['sessionId'], $params['followeeId']);
 
         $this->sendResponse($result['status'], ['details' => $result['details']]);
     }
 
     public function isUserFollowed() {
-        if(!$this->requireParams(['followerId'  => 'str', 'followeeId'   => 'str'])) return;
+        if(!$this->requireParams(['sessionId'  => 'str', 'followeeId'   => 'str'])) return;
         $params = $this->getParams();
-        $result = $this->follow_lib->isUserFollowed($params['followerId'], $params['followeeId']);
+        $result = $this->follow_lib->isUserFollowed($params['sessionId'], $params['followeeId']);
 
         $this->sendResponse($result['status'], ['details' => $result['details']]);  	
     }
