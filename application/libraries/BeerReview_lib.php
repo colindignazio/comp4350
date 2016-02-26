@@ -20,7 +20,8 @@ class BeerReview_lib {
 
     public function getSpecificBeerReviews($id){
         $query = $this->CI->beer_review_access->getSpecificBeerReviews($id);
-        return $query;
+        $result = ['status' => 200, 'details' => $query];
+        return $result;
     }
 
     public function getSearchResults($token) {

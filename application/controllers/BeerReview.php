@@ -25,7 +25,7 @@ class BeerReview extends MY_Controller {
         $params = $this->getParams();
         $beerId = $params['beer_id'];
         $results = $this->beerreview_lib->getSpecificBeerReviews($beerId);
-        $this->sendResponse(200, $results);
+        $this->sendResponse($results['status'], ['results' => $results['details']]);
     }
 
     public function search(){
