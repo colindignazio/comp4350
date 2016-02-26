@@ -35,11 +35,11 @@ class Beer extends MY_Controller {
 
         $results = $this->beer_lib->getAdvancedSearchResults($beerName, $beerType, $brewery, $minPrice, $maxPrice, $minRating, $maxRating, $beerContent);
 
-        /*if(count($results) == 0) {
+        if(count($results) == 0) {
             $this->sendResponse(200, ['details' => 'No matching results']);
-        } else {*/
+        } else {
             $this->sendResponse(200, ['searchResults' => $results]);
-        //}
+        }
     }
 
 
