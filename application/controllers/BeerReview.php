@@ -20,9 +20,12 @@ class BeerReview extends MY_Controller {
         $result = $this->beerreview_lib->getReviewById($id);
         $this->sendResponse($result['status'], ['results' => $result['details']]);
     }
-    private function getSpecificBeerReviews($beer_id){
-        $results = $this->beerreview_lib->getSpecificBeerReviews($beer_id);
-        return $results;
+    public function getSpecificBeerReviews(){
+        if(!$this->requireParams(['beer_id'  => 'str'])) return;
+        $params = $this->getParams();
+        $beerId = $params['beer_id'];
+        $results = $this->beerreview_lib->getSpecificBeerReviews($beerId);
+        $this->sendResponse(200, $results);
     }
 
     public function search(){
@@ -61,7 +64,7 @@ class BeerReview extends MY_Controller {
         $result = $this->beerreview_lib->createBeerReview($beerId, $userId, $storeId, $stars, $review, $price);
 
         if($result['status'] == 200) {
-            $reviews = $this->getSpecificBeerReviews($beerId);
+            $reviews = $this->beerreview_lib->getSpecificBeerReviews($beerId);
             $this->beer_lib->updateRating($reviews, $beerId);
             $this->sendResponse($result['status'], ['review' => $result['details']]);
         }
@@ -99,7 +102,7 @@ class BeerReview extends MY_Controller {
         $result = $this->beerreview_lib->updateReview($reviewId, $beerId, $userId, $storeId, $stars, $review, $price);
 
         if($result['status'] == 200) {
-            $reviews = $this->getSpecificBeerReviews($beerId);
+            $reviews = $this->beerreview_lib->getSpecificBeerReviews($beerId);
             $this->beer_lib->updateRating($reviews, $beerId);
             $this->sendResponse($result['status'], ['review' => $result['details']]);
         }
