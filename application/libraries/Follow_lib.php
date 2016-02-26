@@ -5,6 +5,7 @@ class Follow_lib {
 	public function __construct($dbaccess = array(0 => 'Follow_access_object')) {
 		$this->CI =& get_instance();
         $this->CI->load->model($dbaccess[0], 'follow_access');
+        $this->CI->load->model('sessions');
     }
 
     public function getFolloweeCount($userId) {
@@ -27,8 +28,14 @@ class Follow_lib {
         return $result;
     }
 
-    public function followUser($followerId, $followeeId) {
-    	$success = $this->CI->follow_access->followUser($followerId, $followeeId);    
+    public function followUser($sessionId, $followeeId) {
+        $followerId = $this->CI->sessions->getUser($sessionId)['User_id'];
+
+        if($followerId != null) {
+    	   $success = $this->CI->follow_access->followUser($followerId, $followeeId);    
+        } else {
+            $success = false;
+        }
 
         if($success) {
             $result = ['status' => 200, 'details' => 'User followed'];            
@@ -40,8 +47,14 @@ class Follow_lib {
         return $result;	
     }
 
-    public function unfollowUser($followerId, $followeeId) {
-    	$success = $this->CI->follow_access->unfollowUser($followerId, $followeeId);    
+    public function unfollowUser($sessionId, $followeeId) {
+        $followerId = $this->CI->sessions->getUser($sessionId)['User_id'];
+
+    	if($followerId != null) {
+           $success = $this->CI->follow_access->unfollowUser($followerId, $followeeId);    
+        } else {
+            $success = false;
+        }
 
         if($success) {
             $result = ['status' => 200, 'details' => 'User unfollowed'];            
@@ -53,7 +66,8 @@ class Follow_lib {
         return $result; 	
     }
 
-    public function isUserFollowed($followerId, $followeeId) {
+    public function isUserFollowed($sessionId, $followeeId) {
+        $followerId = $this->CI->sessions->getUser($sessionId)['User_id'];
         $followed = $this->CI->follow_access->isUserFollowed($followerId, $followeeId); 
         $result = ['status' => 200, 'details' => $followed];  
 
