@@ -22,6 +22,27 @@ class Beer extends MY_Controller {
         }        
     }
 
+    public function advancedSearch() {
+        $params = $this->getParams();
+        $beerName =$params['beerName'];
+        $beerType =$params['beerType'];
+        $brewery =$params['brewery'];
+        $minPrice =$params['minPrice'];
+        $maxPrice =$params['maxPrice'];
+        $minRating =$params['minRating'];
+        $maxRating =$params['maxRating'];
+        $beerContent =$params['beerContent'];
+
+        $results = $this->beer_lib->getAdvancedSearchResults($beerName, $beerType, $brewery, $minPrice, $maxPrice, $minRating, $maxRating, $beerContent);
+
+        if(count($results) == 0) {
+            $this->sendResponse(200, ['details' => 'No matching results']);
+        } else {
+            $this->sendResponse(200, ['searchResults' => $results]);
+        }
+    }
+
+
     public function search() {
         if(!$this->requireParams(['searchToken'  => 'str'])) return;
         $params = $this->getParams();

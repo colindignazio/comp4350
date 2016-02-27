@@ -46,4 +46,28 @@ class Beer_access_object extends CI_Model {
 		$this->db->update('Beers');
 	}
 
+	public function getPriceOver($minPrice){
+		$query = $this->db->where('AvgPrice >=',$minPrice)->get('Beers');
+		return $query->result_array();
+	}
+
+	public function getPriceUnder($maxPrice){
+		$query = $this->db->where('AvgPrice <=',$maxPrice)->get('Beers');
+		return $query->result_array();
+	}
+	public function getRatingOver($minRating){
+		$query = $this->db->where('Rating >=',$minRating)->get('Beers');
+		return $query->result_array();
+	}
+	public function getRatingUnder($maxRating){
+		$query = $this->db->where('Rating <=',$maxRating)->get('Beers');
+		return $query->result_array();
+	}
+
+	public function getByAlcoholVol($beerContent){
+		$query = $this->db->like('Alcohol_By_Volume',$beerContent)->get('Beers');
+		return $query->result_array();
+	}
+
+
 }

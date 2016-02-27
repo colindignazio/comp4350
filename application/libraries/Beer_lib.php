@@ -17,7 +17,122 @@ class Beer_lib {
         }
     }
 
-    public function getSearchResults($token) {
+    public function getAdvancedSearchResults($beerName, $beerType, $brewery, $minPrice, $maxPrice, $minRating, $maxRating, $beerContent)
+    {
+        $responseArray = [];
+        $count =0;
+        $tempArray = [];
+        if($beerName != "") {
+            $nameMatches = $this->CI->beer_access->getByName($beerName);
+            $responseArray = $nameMatches;
+            $count++;
+        }
+        if($beerType != "") {
+            $typeMatches = $this->CI->beer_access->getByType($beerType);
+            if(count($responseArray) == 0)
+            {
+                $responseArray = $typeMatches;
+            }
+            else{
+                $responseArray = array_merge($responseArray, $typeMatches);
+            }
+            $count++;
+        }
+        if($brewery != "") {
+            $breweryMatches = $this->CI->beer_access->getByBrewery($brewery);
+            if(count($responseArray) == 0)
+            {
+                $responseArray = $breweryMatches;
+            }
+            else{
+                $responseArray = array_merge($responseArray, $breweryMatches);
+            }
+            $count++;
+        }
+        if($minPrice){
+            $lowPriceMatches = $this->CI->beer_access->getPriceOver($minPrice);
+            if(count($responseArray) == 0)
+            {
+                $responseArray = $lowPriceMatches;
+            }
+            else{
+                $responseArray = array_merge($responseArray, $lowPriceMatches);
+            }
+            $count++;
+        }
+        if($maxPrice){
+            $highPriceMatches = $this->CI->beer_access->getPriceUnder($minPrice);
+            if(count($responseArray) == 0)
+            {
+                $responseArray = $highPriceMatches;
+            }
+            else{
+                $responseArray = array_merge($responseArray, $highPriceMatches);
+            }
+            $count++;
+        }
+        if($minRating){
+            $lowRatingMatches = $this->CI->beer_access->getRatingOver($minRating);
+            if(count($responseArray) == 0)
+            {
+                $responseArray = $lowRatingMatches;
+            }
+            else{
+                $responseArray = array_merge($responseArray, $lowRatingMatches);
+            }
+            $count++;
+        }
+        if($maxRating){
+            $highRatingMatches = $this->CI->beer_access->getRatingUnder($maxRating);
+            if(count($responseArray) == 0)
+            {
+                $responseArray = $highRatingMatches;
+            }
+            else{
+                $responseArray = array_merge($responseArray, $highRatingMatches);
+            }
+            $count++;
+        }
+        if($beerContent){
+            $aclVolMatches = $this->CI->beer_access->getByAlcoholVol($beerContent);
+            if(count($responseArray) == 0)
+            {
+                $responseArray = $aclVolMatches;
+            }
+            else{
+                $responseArray = array_merge($responseArray, $aclVolMatches);
+            }
+            $count++;
+        }
+
+        if($count > 1) {
+            for ($i = 0; $i < count($responseArray); $i++) {
+                $temp = 1;
+                $added = 0;
+                for ($j = $i + 1; $j < count($responseArray); $j++) {
+                    if ($responseArray[$i] === $responseArray[$j]) {
+                        $temp++;
+                    }
+                    if ($temp === $count && $added != 1) {
+                        array_push($tempArray, $responseArray[$i]);
+                        $added = 1;
+                    }
+                }
+            }
+        }
+        else
+        {
+            $tempArray = $responseArray;
+        }
+        return $tempArray;
+    }
+
+    private function compareBeers($beer1, $beer2)
+    {
+        return !strcmp($beer1['Beer_id'],$beer2['Beer_id']);
+    }
+
+        public function getSearchResults($token) {
     	if(strlen($token) < 3) {
     		return null;
         } 
