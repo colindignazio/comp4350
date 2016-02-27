@@ -65,7 +65,7 @@ class BeerReview extends MY_Controller {
 
         if($result['status'] == 200) {
             $reviews = $this->beerreview_lib->getSpecificBeerReviews($beerId);
-            $this->beer_lib->updateRating($reviews, $beerId);
+            $this->beer_lib->updateRating($reviews['details'], $beerId);
             $this->sendResponse($result['status'], ['review' => $result['details']]);
         }
         else {
