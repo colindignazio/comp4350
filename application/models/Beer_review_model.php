@@ -59,6 +59,18 @@ class Beer_review_model extends CI_Model {
     }
 
     public function create($data){
+        //Get total reviews
+        $query = $this->db->query("SELECT COUNT(beer_id) FROM Beer_reviews WHERE beer_id='" . $data['beer_id'] . "';");
+        //Get total review value
+        $query2 = $this->db->query("SELECT SUM(price) FROM Beer_reviews WHERE beer_id='" . $data['beer_id'] . "';");
+        //Update to reflect new review
+        $reviewCount = $query->result_array()[0]['COUNT(beer_id)'];
+        $reviewCount++;
+        $reviewTotal = $query2->result_array()[0]['SUM(price)'];
+        $reviewTotal = $reviewTotal + $data['price'];
+        $newAverage = $reviewTotal / $reviewCount;
+        $this->db->where('Beer_id', $data['beer_id'])
+                 ->update('Beers', ['AvgPrice' => $newAverage]);
         return $this->db->insert('Beer_reviews', $data);
     }
 

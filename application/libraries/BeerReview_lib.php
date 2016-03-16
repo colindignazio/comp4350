@@ -77,7 +77,6 @@ class BeerReview_lib {
                 'price'     => floatval($price)
             ];
         }
-
         if(!$this->CI->beer_review_access->create($data)) {
             return ['status' => 500, 'details' => 'An unknown error occurred'];
         }
