@@ -56,10 +56,18 @@ class BeerReview extends MY_Controller {
 
         $beerId = $params['beer_id'];
         $userId = $params['user_id'];
-        $storeId = $params['store_id'];
+        $storeId = NULL;
+        $storeName = $params['storeName'];
+        $storeAddress = $params['storeAddress'];
         $stars = $params['stars'];
         $review = $params['review'];
         $price = $params['price'];
+
+        if(!is_null($storeName) && !is_null($storeAddress)) {
+            //User supplied a store location so lets see if we need to add it
+            $storeId = $this->beerreview_lib->getStoreId($storeName, $storeAddress);
+            //$this->sendResponse(200, ['details' => $storeId]); 
+        }
 
         $result = $this->beerreview_lib->createBeerReview($beerId, $userId, $storeId, $stars, $review, $price);
 

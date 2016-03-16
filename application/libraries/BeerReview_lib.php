@@ -24,6 +24,10 @@ class BeerReview_lib {
         return $result;
     }
 
+    public function getStoreId($storeName, $storeAddress) {
+        return $this->CI->beer_review_access->getStoreId($storeName, $storeAddress);
+    }
+
     public function getSearchResults($token) {
         $responseArray = [];
         $beerMatches = $this->CI->beer_review_access->searchByBeer($token);

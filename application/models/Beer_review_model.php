@@ -24,6 +24,20 @@ class Beer_review_model extends CI_Model {
         return $this->db->where('beer_id', $id)->get('Beer_reviews')->result_array();
     }
 
+    public function getStoreId($storeName, $storeAddress) {
+        $query = $this->db->where('name', $storeName)
+                          ->where('address', $storeAddress) 
+                          ->get('store');
+        if(count($query->result_array()) > 0) {
+            //store already exists
+            return $query->row_array()['id'];
+        } else {
+            //add store and return the new id
+            $this->db->insert('store', ['name' => $storeName, 'address' => $storeAddress]);
+            return $this->db->insert_id();
+        }
+    }
+
     public function searchByBeer($id){
        $query = $this->db->where('beer_id', $id)->get('Beer_reviews');
         return $query->result_array();
