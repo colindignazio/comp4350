@@ -54,9 +54,9 @@ class Beer extends MY_Controller {
             $this->sendResponse(400, ['details' => 'Search token too short']);
         } 
         elseif(count($results) == 0) {
-            $this->sendResponse(200, ['details' => 'No matching results']);    
+            $this->sendResponse(400, ['details' => 'No matching results']);
         } else {
-            $this->sendResponse(200, ['searchResults' => $results]);  
+            $this->sendResponse(200, ['searchResults' => $results]);
         }
     }
     public function getAllBeers() {
