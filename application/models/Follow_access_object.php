@@ -31,10 +31,28 @@ class Follow_access_object extends CI_Model {
     	$this->db->from('Follows');
     	$this->db->join('Beer_reviews', 'Beer_reviews.user_id=Follows.Followee_id');
     	$this->db->join('Users', 'Users.User_id=Follows.Followee_id');
+        $this->db->join('Beers', 'Beer_reviews.beer_id=Beers.Beer_id');
+        $this->db->join('store', 'Beer_reviews.store_id=store.id');
     	$this->db->where('Follows.Follower_id', $userId);
     	$query = $this->db->get();
 
-        return $query->result_array();
+        $retArray = [];
+        $i = 0;
+        $results = $query->result_array();
+
+        foreach($results as $val) { 
+            unset($val['User_password']);
+            unset($val['User_email_verified']);
+            unset($val['User_email_code']);
+            unset($val['id']);
+            unset($val['Follower_id']);
+            unset($val['Followee_id']);
+            unset($val['Follow_id']);
+            $retArray[$i] = $val;
+            $i++;
+        }
+
+        return $retArray;
     }
 
     public function isUserFollowed($followerId, $followeeId) {
