@@ -19,4 +19,11 @@ class Beer_integration_test extends TestCase {
         $this->assertEquals('5', $output['nameMatches'][0]['Alcohol_By_Volume']);
         $this->assertEquals('Big Rock', $output['nameMatches'][0]['Brewery']);
     }
+    public function test_getAdvancedSearchResults() {
+        $output = $this->obj->getAdvancedSearchResults('Grasshopper', 'ale', 'Big Rock', "", "", "", "", "");
+        $this->assertEquals('Grasshopper', $output['typeMatches'][0]['Name']);
+        $this->assertEquals('5', $output['typeMatches'][0]['Alcohol_By_Volume']);
+        $this->assertEquals('Big Rock', $output['typeMatches'][0]['Brewery']);
+    }
+
 }
