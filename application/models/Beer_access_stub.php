@@ -47,5 +47,43 @@ class Beer_access_stub extends CI_Model
         }
     }
 
+    public function getPriceOver($minPrice){
+        foreach($this->table as $entry) {
+            if ($entry['AvgPrice'] == $minPrice) {
+                return array($entry);
+            }
+        }
+    }
+
+    public function getPriceUnder($maxPrice){
+        foreach($this->table as $entry) {
+            if ($entry['AvgPrice'] == $maxPrice) {
+                return array($entry);
+            }
+        };
+    }
+    public function getRatingOver($minRating){
+        foreach($this->table as $entry) {
+            if ($entry['Rating'] == $minRating) {
+                return array($entry);
+            }
+        };
+    }
+    public function getRatingUnder($maxRating){
+        foreach($this->table as $entry) {
+            if ($entry['Rating'] == $maxRating) {
+                return array($entry);
+            }
+        };
+    }
+
+    public function getByAlcoholVol($beerContent){
+        foreach($this->table as $entry) {
+            if ($entry['Alcohol_By_Volume'] == $beerContent) {
+                return array($entry);
+            }
+        };
+    }
+
 
 }
