@@ -155,7 +155,7 @@ class Beer_lib {
                 $responseArray = array_merge($responseArray, $typeMatches);
             }
 
-            $temp_array = array(); 
+            $temp_array = []; 
             $i = 0; 
             $key_array = array(); 
             $key='Beer_id';
@@ -163,9 +163,9 @@ class Beer_lib {
             foreach($responseArray as $val) { 
                 if (!in_array($val[$key], $key_array)) { 
                     $key_array[$i] = $val[$key]; 
-                    $temp_array[$i] = $val; 
+                    array_push($temp_array, $val);
                 } 
-                $i++; 
+                //$i++; 
             } 
             return $temp_array;
         }
