@@ -16,6 +16,9 @@ class Beer_lib {
         	return $beer;
         }
     }
+    public function newBeer($Type, $Name, $Alcohol_By_Volume, $Brewery, $Rating, $AvgPrice){
+        $this->CI->beer_access->newBeer($Type, $Name, $Alcohol_By_Volume, $Brewery, $Rating, $AvgPrice);
+    }
 
     public function getAdvancedSearchResults($beerName, $beerType, $brewery, $minPrice, $maxPrice, $minRating, $maxRating, $beerContent)
     {

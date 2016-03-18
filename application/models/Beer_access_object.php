@@ -11,6 +11,18 @@ class Beer_access_object extends CI_Model {
     	return $query->result_array();
     }
 
+	public function newBeer($Type, $Name, $Alcohol_By_Volume, $Brewery, $Rating, $AvgPrice){
+		$data = array(
+			'Type' => $Type,
+			'Name' => $Name,
+			'Type' => $Alcohol_By_Volume,
+			'Brewery' => $Brewery,
+			'Rating' => $Rating,
+			'AvgPrice' => $AvgPrice
+		);
+		$this->db->insert('Beers', $data);
+	}
+
     public function getById($id){
     	$query = $this->db->where('Beer_id', $id)
     					  ->get('Beers');
@@ -35,8 +47,7 @@ class Beer_access_object extends CI_Model {
     	return $query->result_array();
     }
 	public function getTop(){
-		$sql = "select * from Beers ORDER BY Rating DESC LIMIT 10"; //This has to be changed once the actual rating is
-		//implemented into the database, ID search is just a temp thing
+		$sql = "select * from Beers ORDER BY Rating DESC LIMIT 10";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
