@@ -15,7 +15,7 @@ class Beer_access_object extends CI_Model {
 		$data = array(
 			'Type' => $Type,
 			'Name' => $Name,
-			'Type' => $Alcohol_By_Volume,
+			'Alcohol_By_Volume' => $Alcohol_By_Volume,
 			'Brewery' => $Brewery,
 			'Rating' => $Rating,
 			'AvgPrice' => $AvgPrice
