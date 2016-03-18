@@ -21,6 +21,7 @@ class Beer_access_object extends CI_Model {
 			'AvgPrice' => $AvgPrice
 		);
 		$this->db->insert('Beers', $data);
+		return true;
 	}
 
     public function getById($id){

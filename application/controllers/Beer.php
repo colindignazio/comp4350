@@ -53,7 +53,9 @@ class Beer extends MY_Controller {
         $Brewery = $params['Brewery'];
         $Rating = $params['Rating'];
         $AvgPrice = $params['AvgPrice'];
-        $this->beer_lib->newBeer($Type, $Name, $Alcohol_By_Volume, $Brewery, $Rating, $AvgPrice);
+        if($this->beer_lib->newBeer($Type, $Name, $Alcohol_By_Volume, $Brewery, $Rating, $AvgPrice)){
+            $this->sendResponse(200);
+        }
     }
 
 
