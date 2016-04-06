@@ -28,6 +28,14 @@ class Follow_lib {
         return $result;
     }
 
+    public function getRecentFolloweeReviewsSession($sessionId) {
+        $user = $this->CI->sessions->getUser($sessionId);
+        $reviews = $this->CI->follow_access->getRecentFolloweeReviews($user['User_id']);
+        $result = ['status' => 200, 'details' => $reviews];  
+
+        return $result;
+    }
+
     public function followUser($sessionId, $followeeId) {
         $followerId = $this->CI->sessions->getUser($sessionId)['User_id'];
 

@@ -41,6 +41,22 @@ class Beer extends MY_Controller {
             $this->sendResponse(200, ['searchResults' => $results]);
         }
     }
+    public function newBeer(){
+        if(!$this->requireParams(['Type'  => 'str', 'Name'  => 'str', 'Alcohol_By_Volume'  => 'str','Brewery'  => 'str','Rating'  => 'str','AvgPrice'  => 'str'])){
+            $this->sendResponse(400, ['details' => 'Missing Parameters']);
+            return;
+        }
+        $params = $this->getParams();
+        $Type = $params['Type'];
+        $Name = $params['Name'];
+        $Alcohol_By_Volume = $params['Alcohol_By_Volume'];
+        $Brewery = $params['Brewery'];
+        $Rating = $params['Rating'];
+        $AvgPrice = $params['AvgPrice'];
+        if($this->beer_lib->newBeer($Type, $Name, $Alcohol_By_Volume, $Brewery, $Rating, $AvgPrice)){
+            $this->sendResponse(200);
+        }
+    }
 
 
     public function search() {

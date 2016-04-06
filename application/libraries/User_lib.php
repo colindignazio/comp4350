@@ -156,9 +156,8 @@ class User_lib {
             foreach($responseArray as $val) { 
                 if (!in_array($val[$key], $key_array)) { 
                     $key_array[$i] = $val[$key]; 
-                    $temp_array[$i] = $val; 
-                } 
-                $i++; 
+                    array_push($temp_array, $val); 
+                }  
             } 
             return $temp_array; 
         }
