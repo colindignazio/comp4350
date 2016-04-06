@@ -57,14 +57,14 @@ class Beer_access_stub extends CI_Model
 
     public function getPriceUnder($maxPrice){
         foreach($this->table as $entry) {
-            if ($entry['AvgPrice'] == $maxPrice) {
+            if ($entry['AvgPrice'] <= $maxPrice) {
                 return array($entry);
             }
         };
     }
     public function getRatingOver($minRating){
         foreach($this->table as $entry) {
-            if ($entry['Rating'] == $minRating) {
+            if ($entry['Rating'] >= $minRating) {
                 return array($entry);
             }
         };

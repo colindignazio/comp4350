@@ -61,7 +61,7 @@ class Beer_lib {
             $count++;
         }
         if($maxPrice){
-            $highPriceMatches = $this->CI->beer_access->getPriceUnder($minPrice);
+            $highPriceMatches = $this->CI->beer_access->getPriceUnder($maxPrice);
             if(count($responseArray) == 0)
             {
                 $responseArray = $highPriceMatches;
