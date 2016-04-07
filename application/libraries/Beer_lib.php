@@ -162,10 +162,9 @@ class Beer_lib {
             
             foreach($responseArray as $val) { 
                 if (!in_array($val[$key], $key_array)) { 
-                    $key_array[$i] = $val[$key]; 
+                    array_push($key_array, $val[$key]);
                     array_push($temp_array, $val);
-                } 
-                //$i++; 
+                }
             } 
             return $temp_array;
         }
