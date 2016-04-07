@@ -24,14 +24,14 @@ class Beer extends MY_Controller {
 
     public function advancedSearch() {
         $params = $this->getParams();
-        $beerName =$params['beerName'];
-        $beerType =$params['beerType'];
-        $brewery =$params['brewery'];
-        $minPrice =$params['minPrice'];
-        $maxPrice =$params['maxPrice'];
-        $minRating =$params['minRating'];
-        $maxRating =$params['maxRating'];
-        $beerContent =$params['beerContent'];
+        $beerName = isset($params['beerName']) ? $params['beerName'] : NULL;
+        $beerType = isset($params['beerType']) ? $params['beerType'] : NULL;
+        $brewery = isset($params['brewery']) ? $params['brewery'] : NULL;
+        $minPrice = isset($params['minPrice']) ? $params['minPrice'] : NULL;
+        $maxPrice = isset($params['maxPrice']) ? $params['maxPrice'] : NULL;
+        $minRating = isset($params['minRating']) ? $params['minRating'] : NULL;
+        $maxRating = isset($params['maxRating']) ? $params['maxRating'] : NULL;
+        $beerContent = isset($params['beerContent']) ? $params['beerContent'] : NULL;
 
         $results = $this->beer_lib->getAdvancedSearchResults($beerName, $beerType, $brewery, $minPrice, $maxPrice, $minRating, $maxRating, $beerContent);
 

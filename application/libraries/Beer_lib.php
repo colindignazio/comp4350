@@ -25,12 +25,12 @@ class Beer_lib {
         $responseArray = [];
         $count =0;
         $tempArray = [];
-        if($beerName != "") {
+        if(!is_null($beerName) && $beerName != "") {
             $nameMatches = $this->CI->beer_access->getByName($beerName);
             $responseArray = $nameMatches;
             $count++;
         }
-        if($beerType != "") {
+        if(!is_null($beerType) && $beerType != "") {
             $typeMatches = $this->CI->beer_access->getByType($beerType);
             if(count($responseArray) == 0)
             {
@@ -41,7 +41,7 @@ class Beer_lib {
             }
             $count++;
         }
-        if($brewery != "") {
+        if(!is_null($brewery) && $brewery != "") {
             $breweryMatches = $this->CI->beer_access->getByBrewery($brewery);
             if(count($responseArray) == 0)
             {
@@ -52,7 +52,7 @@ class Beer_lib {
             }
             $count++;
         }
-        if($minPrice){
+        if(!is_null($minPrice)){
             $lowPriceMatches = $this->CI->beer_access->getPriceOver($minPrice);
             if(count($responseArray) == 0)
             {
@@ -63,7 +63,7 @@ class Beer_lib {
             }
             $count++;
         }
-        if($maxPrice){
+        if(!is_null($maxPrice)){
             $highPriceMatches = $this->CI->beer_access->getPriceUnder($maxPrice);
             if(count($responseArray) == 0)
             {
@@ -74,7 +74,7 @@ class Beer_lib {
             }
             $count++;
         }
-        if($minRating){
+        if(!is_null($minRating)){
             $lowRatingMatches = $this->CI->beer_access->getRatingOver($minRating);
             if(count($responseArray) == 0)
             {
@@ -85,7 +85,7 @@ class Beer_lib {
             }
             $count++;
         }
-        if($maxRating){
+        if(!is_null($maxRating)){
             $highRatingMatches = $this->CI->beer_access->getRatingUnder($maxRating);
             if(count($responseArray) == 0)
             {
@@ -96,7 +96,7 @@ class Beer_lib {
             }
             $count++;
         }
-        if($beerContent){
+        if(!is_null($beerContent)){
             $aclVolMatches = $this->CI->beer_access->getByAlcoholVol($beerContent);
             if(count($responseArray) == 0)
             {
