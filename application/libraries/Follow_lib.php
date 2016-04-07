@@ -5,7 +5,7 @@ class Follow_lib {
 	public function __construct($dbaccess = array(0 => 'Follow_access_object')) {
 		$this->CI =& get_instance();
         $this->CI->load->model($dbaccess[0], 'follow_access');
-        $this->CI->load->model('sessions');
+        $this->CI->load->library('sessions_lib');
     }
 
     public function getFolloweeCount($userId) {
@@ -29,7 +29,7 @@ class Follow_lib {
     }
 
     public function getRecentFolloweeReviewsSession($sessionId) {
-        $user = $this->CI->sessions->getUser($sessionId);
+        $user = $this->CI->sessions_lib->getUser($sessionId);
         $reviews = $this->CI->follow_access->getRecentFolloweeReviews($user['User_id']);
         $result = ['status' => 200, 'details' => $reviews];  
 
@@ -37,7 +37,7 @@ class Follow_lib {
     }
 
     public function followUser($sessionId, $followeeId) {
-        $followerId = $this->CI->sessions->getUser($sessionId)['User_id'];
+        $followerId = $this->CI->sessions_lib->getUser($sessionId)['User_id'];
 
         if($followerId != null) {
     	   $success = $this->CI->follow_access->followUser($followerId, $followeeId);    
@@ -56,7 +56,7 @@ class Follow_lib {
     }
 
     public function unfollowUser($sessionId, $followeeId) {
-        $followerId = $this->CI->sessions->getUser($sessionId)['User_id'];
+        $followerId = $this->CI->sessions_lib->getUser($sessionId)['User_id'];
 
     	if($followerId != null) {
            $success = $this->CI->follow_access->unfollowUser($followerId, $followeeId);    
@@ -75,7 +75,7 @@ class Follow_lib {
     }
 
     public function isUserFollowed($sessionId, $followeeId) {
-        $followerId = $this->CI->sessions->getUser($sessionId)['User_id'];
+        $followerId = $this->CI->sessions_lib->getUser($sessionId)['User_id'];
         $followed = $this->CI->follow_access->isUserFollowed($followerId, $followeeId); 
         $result = ['status' => 200, 'details' => $followed];  
 

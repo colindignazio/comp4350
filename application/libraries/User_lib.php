@@ -5,7 +5,7 @@ class User_lib {
 	public function __construct($dbaccess = array(0 => 'User_access_object')) {
 		$this->CI =& get_instance();
         $this->CI->load->model($dbaccess[0], 'user_access');
-        $this->CI->load->model('sessions');
+        $this->CI->load->library('sessions_lib');
     }
 
     public function createAccount($username, $password, $email, $location) {
@@ -30,7 +30,7 @@ class User_lib {
                 //$this->CI->load->library('emailer');
                 //$this->CI->emailer->sendVerificationCode($params['email'], $emailCode);
                 $userId = $this->CI->user_access->insert_id();
-                $sessionId = $this->CI->sessions->createSession($userId);
+                $sessionId = $this->CI->sessions_lib->createSession($userId);
                 unset($data['User_password']);
                 unset($data['User_email_code']);
                 $result = ['status' => 200, 'user' => $data, 'sessionId' => $sessionId];
@@ -72,7 +72,7 @@ class User_lib {
 
             if(password_verify($password, $user['User_password'])) {
                 unset($user['User_password']);
-                $sessionId = $this->CI->sessions->createSession($user['User_id']);
+                $sessionId = $this->CI->sessions_lib->createSession($user['User_id']);
                 $result['status'] = 200;
                 $result['user'] = $user;
                 $result['sessionId'] = $sessionId;
@@ -166,7 +166,7 @@ class User_lib {
     public function setUsername($sessionId, $userName) {
         $data = ['User_name'    => $userName];
 
-        if(FALSE !== $user = $this->CI->sessions->getUser($sessionId)) {
+        if(FALSE !== $user = $this->CI->sessions_lib->getUser($sessionId)) {
 
             if(!$this->CI->user_access->update($user['User_id'], $data)) {
                 $error = $this->CI->user_access->lastError();
@@ -187,7 +187,7 @@ class User_lib {
     }
 
     public function setPassword($sessionId, $oldPass, $newPass) {
-        if(FALSE !== $user = $this->CI->sessions->getUser($sessionId)) {
+        if(FALSE !== $user = $this->CI->sessions_lib->getUser($sessionId)) {
             $data = ['User_password'    => password_hash($newPass, PASSWORD_DEFAULT)];
 
             if(password_verify($oldPass, $user['User_password'])) {
@@ -206,7 +206,7 @@ class User_lib {
     }
 
     public function setLocation($sessionId, $location) {
-        if(FALSE !== $user = $this->CI->sessions->getUser($sessionId)) {
+        if(FALSE !== $user = $this->CI->sessions_lib->getUser($sessionId)) {
             $data = ['User_location'    => $location];
             if(!$this->CI->user_access->update($user['User_id'], $data)) {
                 $result = ['status' => 500, 'details' => 'An unknown error occurred'];

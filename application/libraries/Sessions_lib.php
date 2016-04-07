@@ -1,12 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Sessions extends CI_Model {
-    public function __construct() {
+class Sessions_lib extends CI_Model {
+    public function __construct($dbaccess = array(0 => 'User_access_object', 1 => 'Sessions_access_object')) {
         parent::__construct();
         $this->load->database();
-        $this->load->model('sessions_access_object', 'sessions_access');
-        $this->load->model('user_access_object', 'user_access');
+        $this->load->model($dbaccess[0], 'user_access');
+        $this->load->model($dbaccess[1], 'sessions_access');
     }
 
     public function createSession($userId) {
