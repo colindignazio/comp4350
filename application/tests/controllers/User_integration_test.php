@@ -10,11 +10,11 @@ class User_integration_test extends TestCase {
     //Sample integration tests for the create account user story.
     public function test_createAccount() {
         //Create account
-        $output = $this->obj->createAccount('MitchellTest', 'testpass', 'mitchell@rocks.com', 'Winnipeg');
+        $output = $this->obj->createAccount('MitchellTest3', 'testpass', 'mitchell3@rocks.com', 'Winnipeg');
         //Verify Success
         $this->assertEquals('200', $output['status']);
         //Remove user
-        $output = $this->obj->deleteAccount('MitchellTest', 'testpass');
+        $output = $this->obj->deleteAccount('MitchellTest3', 'testpass');
         $this->assertEquals('200', $output['status']);
     }
 
