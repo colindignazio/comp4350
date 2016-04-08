@@ -53,19 +53,23 @@ class Follow_lib {
     }
 
     public function followUser($sessionId, $followeeId) {
-        $followerId = $this->CI->sessions_lib->getUser($sessionId)['User_id'];
+        $user = $this->CI->sessions_lib->getUser($sessionId);
+        if(FALSE !== $user = $this->CI->sessions_lib->getUser($sessionId)) {
+            $followerId = $user['User_id'];
+            if($followerId != null) {
+               $success = $this->CI->follow_access->followUser($followerId, $followeeId);    
+            } else {
+                $success = false;
+            }
 
-        if($followerId != null) {
-    	   $success = $this->CI->follow_access->followUser($followerId, $followeeId);    
+            if($success) {
+                $result = ['status' => 200, 'details' => 'User followed'];            
+            }
+            else {
+                $result = ['status' => 404, 'details' => 'User not found.'];                
+            }
         } else {
-            $success = false;
-        }
-
-        if($success) {
-            $result = ['status' => 200, 'details' => 'User followed'];            
-        }
-        else {
-            $result = ['status' => 404, 'details' => 'User not found.'];                
+            $result = ['status' => 401, 'details' => 'Unauthorized'];  
         }
 
         return $result;	
