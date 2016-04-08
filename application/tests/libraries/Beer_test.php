@@ -24,7 +24,7 @@ class Beer_test extends TestCase {
 
         $output = $this->obj->getSearchResults('Ale');
         $this->assertEquals(1, count($output));
-        $this->assertEquals('Grasshopper', $output['typeMatches'][0]['Name']);
+        $this->assertEquals('Grasshopper', $output[0]['Name']);
     }
 
     public function test_getAllBeers() {
