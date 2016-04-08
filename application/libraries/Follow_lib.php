@@ -28,16 +28,27 @@ class Follow_lib {
 
     public function getRecentFolloweeReviews($userId) {
     	$reviews = $this->CI->follow_access->getRecentFolloweeReviews($userId);
-        $result = ['status' => 200, 'details' => $reviews];  
-
+        if(count($reviews) > 0) {
+            $result = ['status' => 200, 'details' => $reviews]; 
+        } else {
+            $result = ['status' => 400, 'details' => 'No Reviews Found']; 
+        }
         return $result;
     }
 
     public function getRecentFolloweeReviewsSession($sessionId) {
         $user = $this->CI->sessions_lib->getUser($sessionId);
-        $reviews = $this->CI->follow_access->getRecentFolloweeReviews($user['User_id']);
-        $result = ['status' => 200, 'details' => $reviews];  
-
+        if(FALSE !== $user = $this->CI->sessions_lib->getUser($sessionId)) {
+            $reviews = $this->CI->follow_access->getRecentFolloweeReviews($user['User_id']);
+            if(count($reviews) > 0) {
+                $result = ['status' => 200, 'details' => $reviews]; 
+            } else {
+                $result = ['status' => 400, 'details' => 'No Reviews Found']; 
+            }  
+        } else {
+            $result['status'] = 401;
+            $result['details'] = ['Unauthorized'];
+        }
         return $result;
     }
 
