@@ -9,8 +9,8 @@ class Follow_integration_test extends TestCase {
 
     //Sample integration tests for the create account user story.
     public function test_follow() {
-        $this->assertEquals('User followed', $this->obj->followUser('00cbfa4e1fd61dc7cd4c09ae363f6a7d8512d19c', 5)['details']);  
-        $this->assertEquals('User unfollowed', $this->obj->unfollowUser('00cbfa4e1fd61dc7cd4c09ae363f6a7d8512d19c', 5)['details']); 
+        $this->assertEquals('User followed', $this->obj->followUser('d9ca485647ef13c1d3250fa4504689a705850c12', 5)['details']);  
+        $this->assertEquals('User unfollowed', $this->obj->unfollowUser('d9ca485647ef13c1d3250fa4504689a705850c12', 5)['details']); 
     }
 
     public function test_getFollowedReviews() {
