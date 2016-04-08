@@ -6,7 +6,8 @@ class Sessions_access_stub extends CI_Model {
         0 => array('Session_id'=>'0', 'User_id'=>0),
         1 => array('Session_id'=>'1', 'User_id'=>1),
         2 => array('Session_id'=>'2', 'User_id'=>2),
-        3 => array('Session_id' => '3', 'User_id' => 3)
+        3 => array('Session_id' => '3', 'User_id' => 3),
+        4 => array('Session_id' => '00cbfa4e1fd61dc7cd4c09ae363f6a7d8512d19c', 'User_id' => 71)
     );
 
     private $newSessions = ['4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20'];

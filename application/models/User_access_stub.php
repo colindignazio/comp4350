@@ -12,7 +12,9 @@ class User_access_stub extends CI_Model {
                 'User_email_verified'=>0, 'User_email_code'=>"", 'User_location'=>'Winnipeg'),
             2 => array('User_id'=>2, 'User_name'=>'Mitchell', 'User_password'=> password_hash('testpass', PASSWORD_DEFAULT), 'User_email'=>'test2@email.com', 
                 'User_email_verified'=>0, 'User_email_code'=>"", 'User_location'=>'Winnipeg'),
-            3 => array('User_id'=>3, 'User_name'=>'Chuffy', 'User_password'=> password_hash('testpass', PASSWORD_DEFAULT), 'User_email'=>'test2@email.com', 
+            3 => array('User_id'=>2, 'User_name'=>'Mitchell', 'User_password'=> password_hash('testpass', PASSWORD_DEFAULT), 'User_email'=>'test2@email.com', 
+                'User_email_verified'=>0, 'User_email_code'=>"", 'User_location'=>'Winnipeg'),
+            4 => array('User_id'=>71, 'User_name'=>'Chuffy32323', 'User_password'=> password_hash('testpass', PASSWORD_DEFAULT), 'User_email'=>'test23232@email.com', 
             'User_email_verified'=>0, 'User_email_code'=>"", 'User_location'=>'Winnipeg')
         );
     }

@@ -5,7 +5,12 @@ class Follow_lib {
 	public function __construct($dbaccess = array(0 => 'Follow_access_object')) {
 		$this->CI =& get_instance();
         $this->CI->load->model($dbaccess[0], 'follow_access');
-        $this->CI->load->library('sessions_lib');
+
+        if($dbaccess[0] == 'Follow_access_stub') {
+            $this->CI->load->library('sessions_lib', array(0 => 'User_access_stub', 1 => 'Sessions_access_stub'));  
+        } else {
+            $this->CI->load->library('sessions_lib');            
+        }
     }
 
     public function getFolloweeCount($userId) {

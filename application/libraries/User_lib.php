@@ -240,7 +240,6 @@ class User_lib {
         else if(is_null($location) || $location == "") {
             $result = 'Invalid location';
         }
-
         return $result;
     }
 
